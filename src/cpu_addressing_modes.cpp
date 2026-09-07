@@ -1,26 +1,47 @@
 #include "bus.hpp"
 #include "cpu.hpp"
 
-uint16_t Cpu::immediate() {
+std::pair<uint16_t, bool> Cpu::immediate() {
   uint16_t addr = pc++;
-  return addr;
+  return {addr, false};
 }
 
-uint16_t Cpu::zeroPage() {
+std::pair<uint16_t, bool> Cpu::zeroPage() {
   uint8_t addr = bus.read(pc++);
-  return addr;
+  return {addr, false};
 }
 
-uint16_t Cpu::zeroPageX() {
+std::pair<uint16_t, bool> Cpu::zeroPageX() {
   uint8_t addr = bus.read(pc++);
   addr += x;
-  return addr;
+  return {addr, false};
 }
 
-uint16_t Cpu::absolute() {
+std::pair<uint16_t, bool> Cpu::absolute() {
   uint8_t low = bus.read(pc++);
   uint8_t high = bus.read(pc++);
   uint16_t addr = (high << 8) | low;
-  return addr;
+  return {addr, false};
 }
 
+std::pair<uint16_t, bool> Cpu::absoluteX() {
+  uint8_t low = bus.read(pc++);
+  uint8_t high = bus.read(pc++);
+  uint16_t base = (high << 8) | low;
+  uint16_t addr = base + x;
+  bool pageCrossed = (base & 0xFF00) != (addr & 0xFF00);
+  return {addr, pageCrossed};
+}
+
+std::pair<uint16_t, bool> Cpu::absoluteY() {
+  uint8_t low = bus.read(pc++);
+  uint8_t high = bus.read(pc++);
+  uint16_t base = (high << 8) | low;
+  uint16_t addr = base + y;
+  bool pageCrossed = (base & 0xFF00) != (addr & 0xFF00);
+  return {addr, pageCrossed};
+}
+
+std::pair<uint16_t, bool> Cpu::indirectX() {
+    
+ }

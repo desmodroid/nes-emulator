@@ -53,7 +53,7 @@ private:
   /// @brief Opcode table with its addressing mode, execution and number of
   /// cycles.
   struct Instruction {
-    std::function<uint16_t()> addressingMode;
+    std::function<std::pair<uint16_t, bool>()> addressingMode;
     std::function<void(uint16_t)> execute;
     uint8_t cycles = 0;
   };
@@ -66,24 +66,42 @@ private:
 
   // -------- Addressing Modes --------
 
-  /// @brief Immediate addressing mode: the operand is the next byte in the
-  /// instruction stream
-  /// @return The address of the operand
-  uint16_t immediate();
+  /// @brief Immediate addressing mode
+  /// @return The address of the operand and if the page has
+  /// been crossed
+  std::pair<uint16_t, bool> immediate();
 
-  /// @brief Zero page addressing mode: the operand is the byte immediately
-  /// following the opcode
-  /// @return The 16 bit effective address of the operand
-  uint16_t zeroPage();
+  /// @brief Zero page addressing mode
+  /// @return The 16 bit effective address of the operand and if the page has
+  /// been crossed
+  std::pair<uint16_t, bool> zeroPage();
 
-  /// @brief Zero page X addressing mode: read the operand from an address with
-  /// an adds an offset by X register
-  /// @return The 16 bit effective address of the operand
-  uint16_t zeroPageX();
+  /// @brief Zero page X addressing mode: adds the X register to the address
+  /// provided by the operand
+  /// @return The 16 bit effective address of the operand and if the page has
+  /// been crossed
+  std::pair<uint16_t, bool> zeroPageX();
 
-  /// @brief Absolute page addressing mode:
-  /// @return The 16 bit effective address of the operand
-  uint16_t absolute();
+  /// @brief Absolute addressing mode
+  /// @return The 16 bit effective address of the operand and if the page has
+  /// been crossed
+  std::pair<uint16_t, bool> absolute();
+
+  /// @brief Absolute X addressing mode: adds the X register to the address
+  /// provided by the operand
+  /// @return The 16 bit effective address of the operand and if the page has
+  /// been crossed
+  std::pair<uint16_t, bool> absoluteX();
+
+  /// @brief Absolute Y addressing mode: adds the Y register to the address
+  /// provided by the operand
+  /// @return The 16 bit effective address of the operand and if the page has
+  /// been crossed
+  std::pair<uint16_t, bool> absoluteY();
+
+  /// @brief 
+  /// @return 
+  std::pair<uint16_t, bool> indirectX();
 
   // -------- Instructions --------
 

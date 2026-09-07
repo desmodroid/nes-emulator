@@ -23,6 +23,10 @@ void Cpu::buildTable() {
                  [this](uint16_t v) { lda(v); }, 4};
   table[0xAD] = {[this]() { return absolute(); },
                  [this](uint16_t v) { lda(v); }, 4};
+  table[0xBD] = {[this]() { return absoluteX(); },
+                 [this](uint16_t v) { lda(v); }, 4};
+  table[0xB9] = {[this]() { return absoluteY(); },
+                 [this](uint16_t v) { lda(v); }, 4};
 }
 
 void Cpu::step() {
@@ -32,6 +36,7 @@ void Cpu::step() {
 
     return;
   }
-  uint16_t addr = instruction.addressingMode();
+  auto [addr, pageCrossed] = instruction.addressingMode();
   instruction.execute(addr);
+  uint8_t totalCycles = instruction.cycles + (pageCrossed ? 1 : 0);
 }
