@@ -16,28 +16,28 @@ void Cpu::setFlag(StatusFlag flag, bool value) {
 /// Addressing mode, execution, cycles
 void Cpu::buildTable() {
   table[0xA9] = {[this]() { return immediate(); },
-                 [this](uint8_t v) { lda(v); }, 2};
-  table[0xA5] = {[this]() { return zeroPage(); }, [this](uint8_t v) { lda(v); },
-                 3};
+                 [this](uint16_t v) { lda(v); }, 2};
+  table[0xA5] = {[this]() { return zeroPage(); },
+                 [this](uint16_t v) { lda(v); }, 3};
   table[0xB5] = {[this]() { return zeroPageX(); },
-                 [this](uint8_t v) { lda(v); }, 4};
-  
+                 [this](uint16_t v) { lda(v); }, 4};
 }
 
 /// Addressing modes
-uint8_t Cpu::immediate() {
+uint16_t Cpu::immediate() {
   uint8_t value = bus.read(pc++);
   return value;
 }
 
-uint8_t Cpu::zeroPage() {
+uint16_t Cpu::zeroPage() {
   uint8_t addr = bus.read(pc++);
   return bus.read(addr);
 }
 
-uint8_t Cpu::zeroPageX() {
+uint16_t Cpu::zeroPageX() {
   uint8_t addr = bus.read(pc++);
-  return bus.read(addr + x);
+  addr += x;
+  return bus.read(addr);
 }
 
 void Cpu::step() {
@@ -47,12 +47,12 @@ void Cpu::step() {
 
     return;
   }
-  uint8_t operand = instruction.addressingMode();
-  instruction.execute(operand);
+  uint16_t addr = instruction.addressingMode();
+  instruction.execute(addr);
 }
 
-void Cpu::lda(uint8_t value) {
-  a = value;
+void Cpu::lda(uint16_t addr) {
+  a = addr;
   setFlag(Zero, a == 0);
   setFlag(Negative, (a & 0x80) != 0);
 }

@@ -52,8 +52,8 @@ private:
   /// @brief Opcode table with its addressing mode, execution and number of
   /// cycles.
   struct Instruction {
-    std::function<uint8_t()> addressingMode;
-    std::function<void(uint8_t)> execute;
+    std::function<uint16_t()> addressingMode;
+    std::function<void(uint16_t)> execute;
     uint8_t cycles = 0;
   };
 
@@ -65,19 +65,20 @@ private:
 
   /// @brief Immediate addressing mode: take the next byte in the instruction
   /// stream
-  /// @return The fetched operand byte
-  uint8_t immediate();
+  /// @return The address of the operand
+  uint16_t immediate();
 
-  /// @brief Zero page addressing mode: read the operand from an address in the
-  /// first 256 bytes of memory 
-  /// @return The fetched operand byte
-  uint8_t zeroPage();
+  /// @brief Zero page addressing mode: the operand is the byte immediately
+  /// following the opcode
+  /// @return The zero page address of the operand
+  uint16_t zeroPage();
 
-  /// @brief Zero page X addressing mode: read the operand from an address with an offset of X
-  /// @return The fetched operand byte
-  uint8_t zeroPageX();
+  /// @brief Zero page X addressing mode: read the operand from an address with
+  /// an adds an offset of X register to the address
+  /// @return The zero page address of the operand
+  uint16_t zeroPageX();
 
-  /// @brief Loads a memory value into the accunmulator
-  /// @param value The byte to load
-  void lda(uint8_t value);
+  /// @brief Loads a memory value into the accumulator
+  /// @param addr The address to read the operand from
+  void lda(uint16_t addr);
 };
