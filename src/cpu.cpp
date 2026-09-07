@@ -21,6 +21,8 @@ void Cpu::buildTable() {
                  [this](uint16_t v) { lda(v); }, 3};
   table[0xB5] = {[this]() { return zeroPageX(); },
                  [this](uint16_t v) { lda(v); }, 4};
+  table[0xAD] = {[this]() { return absolute(); },
+                 [this](uint16_t v) { lda(v); }, 4};
 }
 
 void Cpu::step() {

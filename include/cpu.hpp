@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cstdint>
 #include <functional>
 
@@ -63,20 +64,28 @@ private:
   /// @brief Populates table with all implemented opcodes
   void buildTable();
 
-  /// @brief Immediate addressing mode: take the next byte in the instruction
-  /// stream
+  // -------- Addressing Modes --------
+
+  /// @brief Immediate addressing mode: the operand is the next byte in the
+  /// instruction stream
   /// @return The address of the operand
   uint16_t immediate();
 
   /// @brief Zero page addressing mode: the operand is the byte immediately
   /// following the opcode
-  /// @return The zero page address of the operand
+  /// @return The 16 bit effective address of the operand
   uint16_t zeroPage();
 
   /// @brief Zero page X addressing mode: read the operand from an address with
-  /// an adds an offset of X register to the address
-  /// @return The zero page address of the operand
+  /// an adds an offset by X register
+  /// @return The 16 bit effective address of the operand
   uint16_t zeroPageX();
+
+  /// @brief Absolute page addressing mode:
+  /// @return The 16 bit effective address of the operand
+  uint16_t absolute();
+
+  // -------- Instructions --------
 
   /// @brief Loads a memory value into the accumulator
   /// @param addr The address to read the operand from
