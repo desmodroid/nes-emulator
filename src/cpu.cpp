@@ -23,23 +23,6 @@ void Cpu::buildTable() {
                  [this](uint16_t v) { lda(v); }, 4};
 }
 
-///  Addressing modes
-uint16_t Cpu::immediate() {
-  uint16_t addr = pc++;
-  return addr;
-}
-
-uint16_t Cpu::zeroPage() {
-  uint8_t addr = bus.read(pc++);
-  return addr;
-}
-
-uint16_t Cpu::zeroPageX() {
-  uint8_t addr = bus.read(pc++);
-  addr += x;
-  return addr;
-}
-
 void Cpu::step() {
   uint8_t opcode = bus.read(pc++);
   Instruction& instruction = table[opcode];
@@ -49,10 +32,4 @@ void Cpu::step() {
   }
   uint16_t addr = instruction.addressingMode();
   instruction.execute(addr);
-}
-
-void Cpu::lda(uint16_t addr) {
-  a = bus.read(addr);
-  setFlag(Zero, a == 0);
-  setFlag(Negative, (a & 0x80) != 0);
 }
