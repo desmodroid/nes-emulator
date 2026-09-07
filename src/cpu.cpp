@@ -23,21 +23,21 @@ void Cpu::buildTable() {
                  [this](uint16_t v) { lda(v); }, 4};
 }
 
-/// Addressing modes
+///  Addressing modes
 uint16_t Cpu::immediate() {
-  uint8_t value = bus.read(pc++);
-  return value;
+  uint16_t addr = pc++;
+  return addr;
 }
 
 uint16_t Cpu::zeroPage() {
   uint8_t addr = bus.read(pc++);
-  return bus.read(addr);
+  return addr;
 }
 
 uint16_t Cpu::zeroPageX() {
   uint8_t addr = bus.read(pc++);
   addr += x;
-  return bus.read(addr);
+  return addr;
 }
 
 void Cpu::step() {
@@ -52,7 +52,7 @@ void Cpu::step() {
 }
 
 void Cpu::lda(uint16_t addr) {
-  a = addr;
+  a = bus.read(addr);
   setFlag(Zero, a == 0);
   setFlag(Negative, (a & 0x80) != 0);
 }
