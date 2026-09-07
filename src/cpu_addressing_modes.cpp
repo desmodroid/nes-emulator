@@ -43,5 +43,20 @@ std::pair<uint16_t, bool> Cpu::absoluteY() {
 }
 
 std::pair<uint16_t, bool> Cpu::indirectX() {
-    
- }
+  uint8_t zpAddr = bus.read(pc++);
+  zpAddr += x;
+  uint8_t low = bus.read(zpAddr);
+  uint8_t high = bus.read(static_cast<uint8_t>(zpAddr + 1));
+  uint16_t addr = (high << 8) | low;
+  return {addr, false};
+}
+
+std::pair<uint16_t, bool> Cpu::indirectY() {
+  uint8_t zpAddr = bus.read(pc++);
+  uint8_t low = bus.read(zpAddr);
+  uint8_t high = bus.read(static_cast<uint8_t>(zpAddr + 1));
+  uint16_t base = (high << 8) | low;
+  uint16_t addr = base + y;
+  bool pageCrossed = (base & 0xFF00) != (addr & 0xFF00);
+  return {addr, pageCrossed};
+}

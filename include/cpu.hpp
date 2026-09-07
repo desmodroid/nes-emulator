@@ -67,19 +67,16 @@ private:
   // -------- Addressing Modes --------
 
   /// @brief Immediate addressing mode
-  /// @return The address of the operand and if the page has
-  /// been crossed
+  /// @return The address of the operand
   std::pair<uint16_t, bool> immediate();
 
   /// @brief Zero page addressing mode
-  /// @return The 16 bit effective address of the operand and if the page has
-  /// been crossed
+  /// @return The 16 bit effective address of the operand
   std::pair<uint16_t, bool> zeroPage();
 
   /// @brief Zero page X addressing mode: adds the X register to the address
   /// provided by the operand
-  /// @return The 16 bit effective address of the operand and if the page has
-  /// been crossed
+  /// @return The 16 bit effective address of the operand
   std::pair<uint16_t, bool> zeroPageX();
 
   /// @brief Absolute addressing mode
@@ -89,8 +86,7 @@ private:
 
   /// @brief Absolute X addressing mode: adds the X register to the address
   /// provided by the operand
-  /// @return The 16 bit effective address of the operand and if the page has
-  /// been crossed
+  /// @return The 16 bit effective address of the operand
   std::pair<uint16_t, bool> absoluteX();
 
   /// @brief Absolute Y addressing mode: adds the Y register to the address
@@ -99,9 +95,16 @@ private:
   /// been crossed
   std::pair<uint16_t, bool> absoluteY();
 
-  /// @brief 
-  /// @return 
+  /// @brief Indirect X addressing mode: reads a 16 bit address from a zero page
+  /// pointer then adds Y to it
+  /// @return The 16 bit effective address of the operand
   std::pair<uint16_t, bool> indirectX();
+
+  /// @brief Indirect Y addressing mode: adds Y to the zero page pointer then
+  /// reads a 16 bit address from that location
+  /// @return The 16 bit effective address of the operand and if the page has
+  /// been crossed
+  std::pair<uint16_t, bool> indirectY();
 
   // -------- Instructions --------
 
