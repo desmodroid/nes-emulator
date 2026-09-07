@@ -27,6 +27,10 @@ void Cpu::buildTable() {
                  [this](uint16_t v) { lda(v); }, 4};
   table[0xB9] = {[this]() { return absoluteY(); },
                  [this](uint16_t v) { lda(v); }, 4};
+  table[0xA1] = {[this]() { return indirectX(); },
+                 [this](uint16_t v) { lda(v); }, 6};
+  table[0xB1] = {[this]() { return indirectY(); },
+                 [this](uint16_t v) { lda(v); }, 6};
 }
 
 void Cpu::step() {
