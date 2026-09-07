@@ -17,8 +17,11 @@ void Cpu::setFlag(StatusFlag flag, bool value) {
 void Cpu::buildTable() {
   table[0xA9] = {[this]() { return immediate(); },
                  [this](uint8_t v) { lda(v); }, 2};
-  table[0xA5] = {[this]() { return zeroPage(); },
-                 [this](uint8_t v) { lda(v); }, 3};
+  table[0xA5] = {[this]() { return zeroPage(); }, [this](uint8_t v) { lda(v); },
+                 3};
+  table[0xB5] = {[this]() { return zeroPageX(); },
+                 [this](uint8_t v) { lda(v); }, 4};
+  
 }
 
 /// Addressing modes
@@ -32,7 +35,10 @@ uint8_t Cpu::zeroPage() {
   return bus.read(addr);
 }
 
-
+uint8_t Cpu::zeroPageX() {
+  uint8_t addr = bus.read(pc++);
+  return bus.read(addr + x);
+}
 
 void Cpu::step() {
   uint8_t opcode = bus.read(pc++);

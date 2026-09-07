@@ -73,6 +73,10 @@ private:
   /// @return The fetched operand byte
   uint8_t zeroPage();
 
+  /// @brief Zero page X addressing mode: read the operand from an address with an offset of X
+  /// @return The fetched operand byte
+  uint8_t zeroPageX();
+
   /// @brief Loads a memory value into the accunmulator
   /// @param value The byte to load
   void lda(uint8_t value);
