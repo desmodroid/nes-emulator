@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 
 // Forward declaration, cpu doesnt need the full Bus def
 class Bus;
@@ -34,6 +35,9 @@ public:
   /// @param value The boolean the flag will be set
   void setFlag(StatusFlag flag, bool value);
 
+  /// @brief Fetches an opcode, decodes it and executes it
+  void step();
+
 private:
   Bus& bus;
 
@@ -44,6 +48,30 @@ private:
   uint16_t pc = 0;    // Program counter
   uint8_t sp = 0;     // Stack pointer
   uint8_t status = 0; // Status register
+
+  /// @brief Opcode table with its addressing mode, execution and number of
+  /// cycles.
+  struct Instruction {
+    std::function<uint8_t()> addressingMode;
+    std::function<void(uint8_t)> execute;
+    uint8_t cycles = 0;
+  };
+
+  /// @brief Lookup table of all the possible opcode values
+  std::array<Instruction, 256> table;
+
+  /// @brief Populates table with all implemented opcodes
+  void buildTable();
+
+  /// @brief Immediate addressing mode: take the next byte in the instruction
+  /// stream
+  /// @return The fetched operand byte
+  uint8_t immediate();
+
+  /// @brief Zero page addressing mode: read the operand from an address in the
+  /// first 256 bytes of memory 
+  /// @return The fetched operand byte
+  uint8_t zeroPage();
 
   /// @brief Loads a memory value into the accunmulator
   /// @param value The byte to load
