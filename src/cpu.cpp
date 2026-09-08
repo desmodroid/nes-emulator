@@ -15,22 +15,24 @@ void Cpu::setFlag(StatusFlag flag, bool value) {
 
 /// Addressing mode, execution, cycles
 void Cpu::buildTable() {
-  table[0xA9] = {[this]() { return immediate(); },
-                 [this](uint16_t v) { lda(v); }, 2};
-  table[0xA5] = {[this]() { return zeroPage(); },
-                 [this](uint16_t v) { lda(v); }, 3};
-  table[0xB5] = {[this]() { return zeroPageX(); },
-                 [this](uint16_t v) { lda(v); }, 4};
-  table[0xAD] = {[this]() { return absolute(); },
-                 [this](uint16_t v) { lda(v); }, 4};
-  table[0xBD] = {[this]() { return absoluteX(); },
-                 [this](uint16_t v) { lda(v); }, 4};
-  table[0xB9] = {[this]() { return absoluteY(); },
-                 [this](uint16_t v) { lda(v); }, 4};
-  table[0xA1] = {[this]() { return indirectX(); },
-                 [this](uint16_t v) { lda(v); }, 6};
-  table[0xB1] = {[this]() { return indirectY(); },
-                 [this](uint16_t v) { lda(v); }, 6};
+  // clang-format off
+  table[0xA9] = {[this]() { return immediate(); }, [this](uint16_t v) { lda(v); }, 2};
+  table[0xA5] = {[this]() { return zeroPage();  }, [this](uint16_t v) { lda(v); }, 3};
+  table[0xB5] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { lda(v); }, 4};
+  table[0xAD] = {[this]() { return absolute();  }, [this](uint16_t v) { lda(v); }, 4};
+  table[0xBD] = {[this]() { return absoluteX(); }, [this](uint16_t v) { lda(v); }, 4};
+  table[0xB9] = {[this]() { return absoluteY(); }, [this](uint16_t v) { lda(v); }, 4};
+  table[0xA1] = {[this]() { return indirectX(); }, [this](uint16_t v) { lda(v); }, 6};
+  table[0xB1] = {[this]() { return indirectY(); }, [this](uint16_t v) { lda(v); }, 5};
+
+  table[0xA2] = {[this]() { return immediate(); }, [this](uint16_t v) {ldx(v); }, 2};
+  table[0xA6] = {[this]() { return zeroPage();  }, [this](uint16_t v) {ldx(v); }, 3};
+  table[0xB6] = {[this]() { return zeroPageY(); }, [this](uint16_t v) {ldx(v); }, 4};
+  table[0xAE] = {[this]() { return absolute();  }, [this](uint16_t v) {ldx(v); }, 4};
+  table[0xBE] = {[this]() { return absoluteY(); }, [this](uint16_t v) {ldx(v); }, 4};
+
+
+  // clang-format on
 }
 
 void Cpu::step() {

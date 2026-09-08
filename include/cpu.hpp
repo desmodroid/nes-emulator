@@ -11,7 +11,7 @@ class Bus;
 class Cpu {
 public:
   // -------- Getters and Setters for testing --------
-  
+
   /// @brief Get accumulator register
   /// @return The accumulator register, a
   uint8_t getA() const { return a; }
@@ -89,6 +89,11 @@ private:
   /// @return The 16 bit effective address of the operand
   std::pair<uint16_t, bool> zeroPageX();
 
+  /// @brief Zero page Y addressing mode: adds the Y register to the address
+  /// provided by the operand
+  /// @return The 16 bit effective address of the operand
+  std::pair<uint16_t, bool> zeroPageY();
+
   /// @brief Absolute addressing mode
   /// @return The 16 bit effective address of the operand and if the page has
   /// been crossed
@@ -119,6 +124,10 @@ private:
   // -------- Instructions --------
 
   /// @brief Loads a memory value into the accumulator
-  /// @param addr The address to read the operand from
+  /// @param addr The address containing the operand
   void lda(uint16_t addr);
+
+  /// @brief Loads a memory value into the X register
+  /// @param addr The address containing the operand
+  void ldx(uint16_t addr);
 };

@@ -17,6 +17,12 @@ std::pair<uint16_t, bool> Cpu::zeroPageX() {
   return {addr, false};
 }
 
+std::pair<uint16_t, bool> Cpu::zeroPageY() {
+  uint8_t addr = bus.read(pc++);
+  addr += y;
+  return {addr, false};
+}
+
 std::pair<uint16_t, bool> Cpu::absolute() {
   uint8_t low = bus.read(pc++);
   uint8_t high = bus.read(pc++);
