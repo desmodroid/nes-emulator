@@ -12,3 +12,9 @@ void Cpu::ldx(uint16_t addr) {
   setFlag(Zero, x == 0);
   setFlag(Negative, (x & 0x80) != 0);
 }
+
+void Cpu::ldy(uint16_t addr) {
+  y = bus.read(addr);
+  setFlag(Zero, y == 0);
+  setFlag(Negative, (y & 0x80) != 0);
+}

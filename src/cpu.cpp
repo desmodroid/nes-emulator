@@ -31,6 +31,11 @@ void Cpu::buildTable() {
   table[0xAE] = {[this]() { return absolute();  }, [this](uint16_t v) {ldx(v); }, 4};
   table[0xBE] = {[this]() { return absoluteY(); }, [this](uint16_t v) {ldx(v); }, 4};
 
+  table[0xA0] = {[this]() { return immediate(); }, [this](uint16_t v) {ldy(v); }, 2};
+  table[0xA4] = {[this]() { return zeroPage();  }, [this](uint16_t v) {ldy(v); }, 3};
+  table[0xB4] = {[this]() { return zeroPageX(); }, [this](uint16_t v) {ldy(v); }, 4};
+  table[0xAC] = {[this]() { return absolute();  }, [this](uint16_t v) {ldy(v); }, 4};
+  table[0xBC] = {[this]() { return absoluteY(); }, [this](uint16_t v) {ldy(v); }, 4};
 
   // clang-format on
 }

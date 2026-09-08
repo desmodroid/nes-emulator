@@ -130,4 +130,8 @@ private:
   /// @brief Loads a memory value into the X register
   /// @param addr The address containing the operand
   void ldx(uint16_t addr);
+
+  /// @brief Loads a memory value into the Y register
+  /// @param addr The address containing the operand
+  void ldy(uint16_t addr);
 };
