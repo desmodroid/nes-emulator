@@ -10,6 +10,16 @@ class Bus;
 /// Represents the NES 6502 CPU
 class Cpu {
 public:
+  // -------- Getters and Setters for testing --------
+  
+  /// @brief Get accumulator register
+  /// @return The accumulator register, a
+  uint8_t getA() const { return a; }
+
+  /// @brief Sets the program counter
+  /// @param addr The address to set as the new program counter
+  void setPC(uint16_t addr) { pc = addr; }
+
   /// @brief Status flags stored in the register
   enum StatusFlag : uint8_t {
     Carry = 1 << 0,     // Set when an addition produces a carry
@@ -42,7 +52,7 @@ public:
 private:
   Bus& bus;
 
-  // Registers
+  // -------- Registers --------
   uint8_t a = 0;      // Accumulator
   uint8_t x = 0;      // X index register
   uint8_t y = 0;      // Y index register
