@@ -74,7 +74,9 @@ private:
   /// @brief Populates table with all implemented opcodes
   void buildTable();
 
-  // -------- Addressing Modes --------
+  // ============================================================
+  // Addressing Modes
+  // ============================================================
 
   /// @brief Immediate addressing mode
   /// @return The address of the operand
