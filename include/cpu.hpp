@@ -121,17 +121,31 @@ private:
   /// been crossed
   std::pair<uint16_t, bool> indirectY();
 
-  // -------- Instructions --------
+  // ============================================================
+  // Access Instructions
+  // ============================================================
 
   /// @brief Loads a memory value into the accumulator
   /// @param addr The address containing the operand
   void lda(uint16_t addr);
 
+  /// @brief Stores the accumulators value into memory
+  /// @param addr The address to write the accumulators value to
+  void sta(uint16_t addr);
+
   /// @brief Loads a memory value into the X register
   /// @param addr The address containing the operand
   void ldx(uint16_t addr);
 
+  /// @brief Stores the X registers value into memory
+  /// @param addr The address to write the X registers value to
+  void stx(uint16_t addr);
+
   /// @brief Loads a memory value into the Y register
   /// @param addr The address containing the operand
   void ldy(uint16_t addr);
+
+  /// @brief Stores the Y registers value into memory
+  /// @param addr The address to write the Y registers value to
+  void sty(uint16_t addr);
 };
