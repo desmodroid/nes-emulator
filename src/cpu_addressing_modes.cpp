@@ -66,3 +66,5 @@ std::pair<uint16_t, bool> Cpu::indirectY() {
   bool pageCrossed = (base & 0xFF00) != (addr & 0xFF00);
   return {addr, pageCrossed};
 }
+
+std::pair<uint16_t, bool> Cpu::implied() { return {0, false}; }

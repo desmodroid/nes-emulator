@@ -126,6 +126,10 @@ private:
   /// been crossed
   std::pair<uint16_t, bool> indirectY();
 
+  /// @brief Implied addressing mode: used by instructions that have no address operand
+  /// @return A placeholder address
+  std::pair<uint16_t, bool> implied();
+
   // ============================================================
   // Access Instructions
   // ============================================================
