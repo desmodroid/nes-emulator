@@ -46,6 +46,8 @@ public:
   /// @param value The boolean the flag will be set
   void setFlag(StatusFlag flag, bool value);
 
+  void setZeroNegativeFlags(uint8_t value);
+
   /// @brief Fetches an opcode, decodes it and executes it
   void step();
 
@@ -156,8 +158,8 @@ private:
   // Transfer Instructions
   // ============================================================
 
-  void tax(uint16_t /* unused */) {}
-  void txa(uint16_t /* unused */) {}
-  void tay(uint16_t /* unused */) {}
-  void tya(uint16_t /* unused */) {}
+  void tax(uint16_t /* unused */);
+  void txa(uint16_t /* unused */);
+  void tay(uint16_t /* unused */);
+  void tya(uint16_t /* unused */);
 };

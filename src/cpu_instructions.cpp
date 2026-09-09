@@ -7,24 +7,45 @@
 
 void Cpu::lda(uint16_t addr) {
   a = bus.read(addr);
-  setFlag(Zero, a == 0);
-  setFlag(Negative, (a & 0x80) != 0);
+  setZeroNegativeFlags(a);
 }
 
 void Cpu::sta(uint16_t addr) { bus.write(addr, a); }
 
 void Cpu::ldx(uint16_t addr) {
   x = bus.read(addr);
-  setFlag(Zero, x == 0);
-  setFlag(Negative, (x & 0x80) != 0);
+  setZeroNegativeFlags(x);
 }
 
 void Cpu::stx(uint16_t addr) { bus.write(addr, x); }
 
 void Cpu::ldy(uint16_t addr) {
   y = bus.read(addr);
-  setFlag(Zero, y == 0);
-  setFlag(Negative, (y & 0x80) != 0);
+  setZeroNegativeFlags(y);
 }
 
 void Cpu::sty(uint16_t addr) { bus.write(addr, y); }
+
+// ============================================================
+// Transfer Instructions
+// ============================================================
+
+void Cpu::tax(uint16_t /* unused */) {
+  x = a;
+  setZeroNegativeFlags(x);
+}
+
+void Cpu::txa(uint16_t /* unused */) {
+  a = x;
+  setZeroNegativeFlags(a);
+}
+
+void Cpu::tay(uint16_t /* unused */) {
+  y = a;
+  setZeroNegativeFlags(y);
+}
+
+void Cpu::tya(uint16_t /* unused */) {
+  a = y;
+  setZeroNegativeFlags(a);
+}

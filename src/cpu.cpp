@@ -13,6 +13,11 @@ void Cpu::setFlag(StatusFlag flag, bool value) {
   }
 }
 
+void Cpu::setZeroNegativeFlags(uint8_t value) {
+  setFlag(Zero, value == 0);
+  setFlag(Negative, (value & 0x80) != 0);
+}
+
 /// Addressing mode, execution, cycles
 void Cpu::buildTable() {
   // clang-format off
@@ -47,12 +52,16 @@ void Cpu::buildTable() {
   table[0xA4] = {[this]() { return zeroPage();  }, [this](uint16_t v) { ldy(v); }, 3, false};
   table[0xB4] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { ldy(v); }, 4, false};
   table[0xAC] = {[this]() { return absolute();  }, [this](uint16_t v) { ldy(v); }, 4, false};
-  table[0xBC] = {[this]() { return absoluteX(); }, [this](uint16_t v) { ldy(v); }, 4, true};
+  table[0xBC] = {[this]() { return absoluteX(); }, [this](uint16_t v) { ldy(v); }, 4,  true};
 
   table[0x84] = {[this]() { return zeroPage();  }, [this](uint16_t v) { sty(v); }, 3, false};
   table[0x94] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { sty(v); }, 4, false};
   table[0x8C] = {[this]() { return absolute();  }, [this](uint16_t v) { sty(v); }, 4, false};
 
+  table[0xAA] = {[this]() { return implied();   }, [this](uint16_t v) { tax(v); }, 2, false};
+  table[0x8A] = {[this]() { return implied();   }, [this](uint16_t v) { txa(v); }, 2, false};
+  table[0xA8] = {[this]() { return implied();   }, [this](uint16_t v) { tay(v); }, 2, false};
+  table[0x98] = {[this]() { return implied();   }, [this](uint16_t v) { tya(v); }, 2, false};
 
   // clang-format on
 }
