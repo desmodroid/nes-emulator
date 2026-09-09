@@ -21,6 +21,8 @@ void Cpu::setZeroNegativeFlags(uint8_t value) {
 /// Addressing mode, execution, cycles
 void Cpu::buildTable() {
   // clang-format off
+
+  // -------- Access Instructions --------
   table[0xA9] = {[this]() { return immediate(); }, [this](uint16_t v) { lda(v); }, 2, false};
   table[0xA5] = {[this]() { return zeroPage();  }, [this](uint16_t v) { lda(v); }, 3, false};
   table[0xB5] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { lda(v); }, 4, false};
@@ -58,10 +60,14 @@ void Cpu::buildTable() {
   table[0x94] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { sty(v); }, 4, false};
   table[0x8C] = {[this]() { return absolute();  }, [this](uint16_t v) { sty(v); }, 4, false};
 
+  // -------- Transfer Instructions --------
   table[0xAA] = {[this]() { return implied();   }, [this](uint16_t v) { tax(v); }, 2, false};
   table[0x8A] = {[this]() { return implied();   }, [this](uint16_t v) { txa(v); }, 2, false};
   table[0xA8] = {[this]() { return implied();   }, [this](uint16_t v) { tay(v); }, 2, false};
   table[0x98] = {[this]() { return implied();   }, [this](uint16_t v) { tya(v); }, 2, false};
+
+  // -------- Arithmetic Instructions --------
+
 
   // clang-format on
 }

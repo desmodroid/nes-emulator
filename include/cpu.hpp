@@ -126,7 +126,8 @@ private:
   /// been crossed
   std::pair<uint16_t, bool> indirectY();
 
-  /// @brief Implied addressing mode: used by instructions that have no address operand
+  /// @brief Implied addressing mode: used by instructions that have no address
+  /// operand
   /// @return A placeholder address
   std::pair<uint16_t, bool> implied();
 
@@ -162,8 +163,19 @@ private:
   // Transfer Instructions
   // ============================================================
 
+  /// @brief Copies the accumulator value to the X register
+  /// @param unused placeholder parameter
   void tax(uint16_t /* unused */);
+
+  /// @brief Copies the X register value to the accumulator
+  /// @param unused placeholder parameter
   void txa(uint16_t /* unused */);
+
+  /// @brief Copies the accumulator value to the Y register
+  /// @param unused placeholder parameter
   void tay(uint16_t /* unused */);
+
+  /// @brief Copies the Y register value to the accumulator
+  /// @param unused placeholder parameter
   void tya(uint16_t /* unused */);
 };
