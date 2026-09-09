@@ -66,6 +66,7 @@ private:
     std::function<std::pair<uint16_t, bool>()> addressingMode;
     std::function<void(uint16_t)> execute;
     uint8_t cycles = 0;
+    bool canCrossPage = true;
   };
 
   /// @brief Lookup table of all the possible opcode values
@@ -150,4 +151,13 @@ private:
   /// @brief Stores the Y registers value into memory
   /// @param addr The address to write the Y registers value to
   void sty(uint16_t addr);
+
+  // ============================================================
+  // Transfer Instructions
+  // ============================================================
+
+  void tax(uint16_t /* unused */) {}
+  void txa(uint16_t /* unused */) {}
+  void tay(uint16_t /* unused */) {}
+  void tya(uint16_t /* unused */) {}
 };
