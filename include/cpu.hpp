@@ -16,6 +16,10 @@ public:
   /// @return The accumulator register, a
   uint8_t getA() const { return a; }
 
+  /// @brief Sets the accumulator
+  /// @param value The value to set as the new accumulator
+  void setA(uint8_t value) { a = value; }
+
   /// @brief Sets the program counter
   /// @param addr The address to set as the new program counter
   void setPC(uint16_t addr) { pc = addr; }

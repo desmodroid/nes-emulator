@@ -28,7 +28,7 @@ target_include_directories(nes_core PUBLIC
 add_executable(nes-emulator main.cpp)
 
 add_executable(tests
-    tests/cpu_test.cpp
+    tests/cpu_instructions_test.cpp
 )
 
 
