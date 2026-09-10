@@ -178,4 +178,12 @@ private:
   /// @brief Copies the Y register value to the accumulator
   /// @param unused placeholder parameter
   void tya(uint16_t /* unused */);
+
+  // ============================================================
+  // Arithmetic Instructions
+  // ============================================================
+
+  /// @brief Add the carry flag and a memory value to the accumulator
+  /// @param addr The address of the value to add to the accumulator
+  void adc(uint16_t addr);
 };
