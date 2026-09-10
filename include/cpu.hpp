@@ -46,7 +46,9 @@ public:
   /// @param value The boolean the flag will be set
   void setFlag(StatusFlag flag, bool value);
 
-  void setZeroNegativeFlags(uint8_t value);
+  /// @brief Sets zero and negative flags depending on the value
+  /// @param value The value to set the flags against
+  void updateZeroNegativeFlags(uint8_t value);
 
   /// @brief Fetches an opcode, decodes it and executes it
   void step();
@@ -186,4 +188,9 @@ private:
   /// @brief Add the carry flag and a memory value to the accumulator
   /// @param addr The address of the value to add to the accumulator
   void adc(uint16_t addr);
+
+  /// @brief Subtract the memory value and the NOT of the carry flag from the
+  /// accumulator.
+  /// @param addr The address of the value to subtract from the accumulator
+  void sbc(uint16_t addr);
 };
