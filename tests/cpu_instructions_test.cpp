@@ -19,7 +19,7 @@ struct CpuFixture {
 };
 
 // ============================================================
-// Addressing Modes
+// Access Instructions
 // ============================================================
 
 TEST_CASE_METHOD(CpuFixture, "LDA immediate loads a value into A") {
@@ -50,7 +50,7 @@ TEST_CASE_METHOD(CpuFixture, "LDA immediate sets negative flag when loading nega
 }
 
 // ============================================================
-// Arithmetic Modes
+// Arithmetic Instructions
 // ============================================================
 
 TEST_CASE_METHOD(CpuFixture, "ADC adds two positives with no carry or overflow") {

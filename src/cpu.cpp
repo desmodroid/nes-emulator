@@ -85,6 +85,7 @@ void Cpu::buildTable() {
   table[0xE1] = {[this]() { return indirectX(); }, [this](uint16_t v) { sbc(v); }, 6, false};
   table[0xF1] = {[this]() { return indirectY(); }, [this](uint16_t v) { sbc(v); }, 5, false};
 
+  
 
 
   // clang-format on
