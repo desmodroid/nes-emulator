@@ -87,3 +87,15 @@ void Cpu::inc(uint16_t addr) {
   bus.write(addr, memoryValue);
   updateZeroNegativeFlags(memoryValue);
 }
+
+void Cpu::dec(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+  memoryValue -= 1;
+  bus.write(addr, memoryValue);
+  updateZeroNegativeFlags(memoryValue);
+}
+
+void Cpu::dex(uint16_t /* unused */) {
+  x -= 1;
+  updateZeroNegativeFlags(x);
+}

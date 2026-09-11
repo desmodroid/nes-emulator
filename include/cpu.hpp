@@ -198,7 +198,15 @@ private:
   /// @param addr The address of the value to subtract from the accumulator
   void sbc(uint16_t addr);
 
-  /// @brief Adds one to the memory location
+  /// @brief Adds one to a memory location
   /// @param addr The address of memory to add one
   void inc(uint16_t addr);
+
+  /// @brief Subtracts one from a memory location
+  /// @param addr The address of memory to decrease by one.
+  void dec(uint16_t addr);
+
+  /// @brief Subtract one rom the X register
+  /// @param unused placeholder parameter
+  void dex(uint16_t /* unused */);
 };
