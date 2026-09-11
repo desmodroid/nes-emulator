@@ -209,4 +209,8 @@ private:
   /// @brief Subtract one rom the X register
   /// @param unused placeholder parameter
   void dex(uint16_t /* unused */);
+
+  /// @brief Subtract one rom the Y register
+  /// @param unused placeholder parameter
+  void dey(uint16_t /* unused */);
 };

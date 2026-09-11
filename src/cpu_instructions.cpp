@@ -99,3 +99,8 @@ void Cpu::dex(uint16_t /* unused */) {
   x -= 1;
   updateZeroNegativeFlags(x);
 }
+
+void Cpu::dey(uint16_t /* unused */) {
+  y -= 1;
+  updateZeroNegativeFlags(y);
+}
