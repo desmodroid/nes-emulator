@@ -95,9 +95,19 @@ void Cpu::dec(uint16_t addr) {
   updateZeroNegativeFlags(memoryValue);
 }
 
+void Cpu::inx(uint16_t /* unused */) {
+  x += 1;
+  updateZeroNegativeFlags(x);
+}
+
 void Cpu::dex(uint16_t /* unused */) {
   x -= 1;
   updateZeroNegativeFlags(x);
+}
+
+void Cpu::iny(uint16_t /* unused */) {
+  y += 1;
+  updateZeroNegativeFlags(y);
 }
 
 void Cpu::dey(uint16_t /* unused */) {

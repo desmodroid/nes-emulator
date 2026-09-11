@@ -95,8 +95,13 @@ void Cpu::buildTable() {
   table[0xCE] = {[this]() { return absolute();  }, [this](uint16_t v) { dec(v); }, 6, false};
   table[0xDE] = {[this]() { return absoluteX(); }, [this](uint16_t v) { dec(v); }, 7, false};
 
+  table[0xE8] = {[this]() { return implied();   }, [this](uint16_t v) { inx(v); }, 2, false};
+
   table[0xCA] = {[this]() { return implied();   }, [this](uint16_t v) { dex(v); }, 2, false};
-  
+
+  table[0xC8] = {[this]() { return implied();   }, [this](uint16_t v) { iny(v); }, 2, false};
+
+
   table[0x88] = {[this]() { return implied();   }, [this](uint16_t v) { dey(v); }, 2, false};
   // clang-format on
 }

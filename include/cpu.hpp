@@ -206,9 +206,17 @@ private:
   /// @param addr The address of memory to decrease by one.
   void dec(uint16_t addr);
 
+  /// @brief Adds one to a X register
+  /// @param unused placeholder parameter
+  void inx(uint16_t /* unused */);
+
   /// @brief Subtract one rom the X register
   /// @param unused placeholder parameter
   void dex(uint16_t /* unused */);
+
+  /// @brief Adds one to a Y register
+  /// @param unused placeholder parameter
+  void iny(uint16_t /* unused */);
 
   /// @brief Subtract one rom the Y register
   /// @param unused placeholder parameter
