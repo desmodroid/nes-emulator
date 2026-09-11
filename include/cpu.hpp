@@ -197,4 +197,8 @@ private:
   /// accumulator.
   /// @param addr The address of the value to subtract from the accumulator
   void sbc(uint16_t addr);
+
+  /// @brief Adds one to the memory location
+  /// @param addr The address of memory to add one
+  void inc(uint16_t addr);
 };

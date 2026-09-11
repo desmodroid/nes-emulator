@@ -85,7 +85,10 @@ void Cpu::buildTable() {
   table[0xE1] = {[this]() { return indirectX(); }, [this](uint16_t v) { sbc(v); }, 6, false};
   table[0xF1] = {[this]() { return indirectY(); }, [this](uint16_t v) { sbc(v); }, 5, false};
 
-  
+  table[0xE6] = {[this]() { return zeroPage();  }, [this](uint16_t v) { inc(v); }, 5, false};
+  table[0xF6] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { inc(v); }, 6, false};
+  table[0xEE] = {[this]() { return absolute();  }, [this](uint16_t v) { inc(v); }, 6, false};
+  table[0xFE] = {[this]() { return absoluteX(); }, [this](uint16_t v) { inc(v); }, 7, false};
 
 
   // clang-format on
@@ -100,6 +103,5 @@ void Cpu::step() {
   }
   auto [addr, pageCrossed] = instruction.addressingMode();
   instruction.execute(addr);
-  uint8_t totalCycles =
-      instruction.cycles + ((pageCrossed && instruction.canCrossPage) ? 1 : 0);
+  uint8_t totalCycles = instruction.cycles + ((pageCrossed && instruction.canCrossPage) ? 1 : 0);
 }

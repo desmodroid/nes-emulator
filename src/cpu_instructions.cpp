@@ -51,7 +51,7 @@ void Cpu::tya(uint16_t /* unused */) {
 }
 
 // ============================================================
-// Transfer Instructions
+// Arithmetic Instructions
 // ============================================================
 
 void Cpu::adc(uint16_t addr) {
@@ -79,4 +79,11 @@ void Cpu::sbc(uint16_t addr) {
   updateZeroNegativeFlags(a);
   setFlag(Carry, sum > 0xFF);
   setFlag(Overflow, overflow);
+}
+
+void Cpu::inc(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+  memoryValue += 1;
+  bus.write(addr, memoryValue);
+  updateZeroNegativeFlags(memoryValue);
 }

@@ -3,7 +3,7 @@
 #include <array>
 #include <cstdint>
 
-/// @brief Represents the 6502 bus and 64KiB 
+/// @brief Represents the 6502 bus and 64KiB
 class Bus {
 public:
   /// @brief Writes a byte to the specified memory address
