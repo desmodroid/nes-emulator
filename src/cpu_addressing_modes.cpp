@@ -68,3 +68,5 @@ std::pair<uint16_t, bool> Cpu::indirectY() {
 }
 
 std::pair<uint16_t, bool> Cpu::implied() { return {0, false}; }
+
+std::pair<uint16_t, bool> Cpu::accumulator() { return {0, false}; }

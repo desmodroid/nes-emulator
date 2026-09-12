@@ -141,6 +141,10 @@ private:
   /// @return A placeholder address
   std::pair<uint16_t, bool> implied();
 
+  /// @brief Accumulator addressing mode: operates directly on the accumulator
+  /// @return A placeholder address, ignored by the instruction (e.g. ASL A)
+  std::pair<uint16_t, bool> accumulator();
+
   // ============================================================
   // Access Instructions
   // ============================================================
