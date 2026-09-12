@@ -236,3 +236,34 @@ void Cpu::bit(uint16_t addr) {
   setFlag(Cpu::Overflow, (memoryValue & 0x40) != 0);
   setFlag(Cpu::Negative, (memoryValue & 0x80) != 0);
 }
+
+// ============================================================
+// Compare Instructions
+// ============================================================
+
+void Cpu::cmp(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+  uint8_t result = a - memoryValue;
+
+  setFlag(Cpu::Carry, a >= memoryValue);
+  setFlag(Cpu::Zero, a == memoryValue);
+  setFlag(Cpu::Negative, (result & 0x80) != 0);
+}
+
+void Cpu::cpx(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+  uint8_t result = x - memoryValue;
+
+  setFlag(Cpu::Carry, x >= memoryValue);
+  setFlag(Cpu::Zero, x == memoryValue);
+  setFlag(Cpu::Negative, (result & 0x80) != 0);
+}
+
+void Cpu::cpy(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+  uint8_t result = y - memoryValue;
+
+  setFlag(Cpu::Carry, y >= memoryValue);
+  setFlag(Cpu::Zero, y == memoryValue);
+  setFlag(Cpu::Negative, (result & 0x80) != 0);
+}
