@@ -253,4 +253,24 @@ private:
   /// @brief Rotates all the bits to the right by one position through the carry flag
   /// @param addr The address of the value to rotate
   void ror(uint16_t addr);
+
+  // ============================================================
+  // Bitwise Instructions
+  // ============================================================
+
+  /// @brief ANDs a memory value and the accumulator
+  /// @param addr The address of the value
+  void and_a(uint16_t addr);
+
+  /// @brief Inclusive ORs a memory value and the accumulator
+  /// @param addr The address of the value
+  void ora(uint16_t addr);
+
+  /// @brief Exclube ORs a memory value and the accumulaor
+  /// @param addr The address of the value
+  void eor(uint16_t addr);
+
+  /// @brief BIT modifies flags but does not change memory or registers.
+  /// @param addr The address of the value
+  void bit(uint16_t addr);
 };
