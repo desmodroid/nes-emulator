@@ -287,4 +287,20 @@ private:
   /// @brief BIT modifies flags but does not change memory or registers.
   /// @param addr The address of the value
   void bit(uint16_t addr);
+
+  // ============================================================
+  // Compare Instructions
+  // ============================================================
+
+  /// @brief Compare A to a memory value and set appropriate flags, does not touch any registers
+  /// @param addr The address of the value
+  void cmp(uint16_t addr);
+
+  /// @brief Compare X to a memory value and set appropriate flags, does not touch any registers
+  /// @param addr The address of the value
+  void cpx(uint16_t addr);
+
+  /// @brief Compare Y to a memory value and set appropriate flags, does not touch any registers
+  /// @param addr The address of the value
+  void cpy(uint16_t addr);
 };
