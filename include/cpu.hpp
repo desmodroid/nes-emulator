@@ -238,6 +238,10 @@ private:
   /// @param addr The address of the value to shift
   void asl(uint16_t addr);
 
+  /// @brief Shift all bits of the accumulator to the left by one position
+  /// @param addr The address of the value to shift
+  void asl_a(uint16_t /* unused */);
+
   /// @brief Shifts all bits to the right by one position
   /// @param addr The address of the value to shift
   void lsr(uint16_t addr);

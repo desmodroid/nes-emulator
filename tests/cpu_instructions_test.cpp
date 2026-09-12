@@ -1,6 +1,7 @@
 #include "bus.hpp"
 #include "cpu.hpp"
 #include <catch2/catch_test_macros.hpp>
+#include <iostream>
 
 struct CpuFixture {
   Bus bus;
@@ -140,5 +141,21 @@ TEST_CASE_METHOD(CpuFixture, "INX increases memory by one") {
 
   REQUIRE(cpu.getX() == 0x01);
   REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
+}
+
+// ============================================================
+// Shift Instructions
+// ============================================================
+
+TEST_CASE_METHOD(CpuFixture, "ASL A shifts all bits left") {
+
+  cpu.setA(0x71); // 01110001
+  loadBytes({0x0A, 0x05});
+  cpu.step();
+
+  REQUIRE(cpu.getA() == 0xE2); // 11100010
+  REQUIRE(cpu.getFlag(Cpu::Carry) == true);
+  REQUIRE(cpu.getFlag(Cpu::Negative) == true);
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
 }
