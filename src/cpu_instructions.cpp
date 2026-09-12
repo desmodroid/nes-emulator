@@ -205,3 +205,34 @@ void Cpu::ror_a(uint16_t /* unused */) {
   updateZeroNegativeFlags(a);
   setFlag(Cpu::Carry, newCarry);
 }
+
+// ============================================================
+// Bitwise Instructions
+// ============================================================
+
+void Cpu::and_a(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+  a &= memoryValue;
+  updateZeroNegativeFlags(a);
+}
+
+void Cpu::ora(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+  a |= memoryValue;
+  updateZeroNegativeFlags(a);
+}
+
+void Cpu::eor(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+  a ^= memoryValue;
+  updateZeroNegativeFlags(a);
+}
+
+void Cpu::bit(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+  uint8_t result = a & memoryValue;
+
+  setFlag(Cpu::Zero, result == 0);
+  setFlag(Cpu::Overflow, (memoryValue & 0x40) != 0);
+  setFlag(Cpu::Negative, (memoryValue & 0x80) != 0);
+}
