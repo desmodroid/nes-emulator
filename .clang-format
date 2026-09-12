@@ -1,5 +1,5 @@
 BasedOnStyle: LLVM
-PointerAlignmnet: Left
+PointerAligment: Left
 ReferenceAlignment: Left
 DerivePointerAlignment: false
 ColumnLimit: 100

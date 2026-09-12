@@ -101,8 +101,11 @@ void Cpu::buildTable() {
   table[0x88] = {[this]() { return implied();   }, [this](uint16_t v) { dey(v); }, 2, false};
 
   // -------- Shift Instructions --------
-  table[0x0A] = {[this]() { return accumulator(); }, [this](uint16_t v) { asl_a(v);}, 2, false};
-
+  table[0x0A] = {[this]() { return accumulator();  }, [this](uint16_t v) { asl_a(v);}, 2, false};
+  table[0x06] = {[this]() { return zeroPage();  }, [this](uint16_t v) { asl(v); }, 5, false};
+  table[0x16] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { asl(v); }, 5, false};
+  table[0x0E] = {[this]() { return absolute();  }, [this](uint16_t v) { asl(v); }, 5, false};
+  table[0x1E] = {[this]() { return absoluteX(); }, [this](uint16_t v) { asl(v); }, 5, false};
 
   // clang-format on
 }

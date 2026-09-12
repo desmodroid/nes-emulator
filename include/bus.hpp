@@ -12,7 +12,7 @@ public:
   void write(uint16_t addr, uint8_t data);
 
   /// @brief Reads a byte from the specified memory address
-  /// @param addr The 16-bit memory address to write to
+  /// @param addr The 16-bit memory address to read from
   /// @return The 8-bit value stored at the address
   uint8_t read(uint16_t addr) const;
 
