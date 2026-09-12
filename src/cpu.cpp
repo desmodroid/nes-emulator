@@ -107,6 +107,9 @@ void Cpu::buildTable() {
   table[0x0E] = {[this]() { return absolute();  }, [this](uint16_t v) { asl(v); }, 5, false};
   table[0x1E] = {[this]() { return absoluteX(); }, [this](uint16_t v) { asl(v); }, 5, false};
 
+  table[0x26] = {[this]() { return zeroPage(); }, [this](uint16_t v) { rol(v); }, 5, false};
+
+
   // clang-format on
 }
 

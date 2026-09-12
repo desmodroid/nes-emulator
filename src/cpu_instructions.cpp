@@ -137,3 +137,17 @@ void Cpu::asl(uint16_t addr) {
   setFlag(Carry, carryBit);
   bus.write(addr, memoryValue);
 }
+
+void Cpu::rol(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+
+  bool newCarry = (memoryValue & 0x80) != 0;
+  bool oldCarry = getFlag(Cpu::Carry);
+
+  memoryValue = memoryValue << 1;
+  memoryValue |= oldCarry ? 1 : 0;
+
+  updateZeroNegativeFlags(memoryValue);
+  setFlag(Cpu::Carry, newCarry);
+  bus.write(addr, memoryValue);
+}
