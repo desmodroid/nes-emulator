@@ -136,7 +136,7 @@ TEST_CASE_METHOD(CpuFixture, "SBC sets carry when underflows") {
 }
 
 TEST_CASE_METHOD(CpuFixture, "INX increases memory by one") {
-  loadBytes({0xE8, 0x01});
+  loadBytes({0xE8});
   cpu.step();
 
   REQUIRE(cpu.getX() == 0x01);
@@ -151,11 +151,22 @@ TEST_CASE_METHOD(CpuFixture, "INX increases memory by one") {
 TEST_CASE_METHOD(CpuFixture, "ASL A shifts all bits left") {
 
   cpu.setA(0x71); // 01110001
-  loadBytes({0x0A, 0x05});
+  loadBytes({0x0A});
   cpu.step();
 
   REQUIRE(cpu.getA() == 0xE2); // 11100010
   REQUIRE(cpu.getFlag(Cpu::Negative) == true);
   REQUIRE_FALSE(cpu.getFlag(Cpu::Carry));
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
+}
+
+TEST_CASE_METHOD(CpuFixture, "ASL shifts all bits left") {
+  bus.write(0x0010, 0xAA); // 10101010
+  loadBytes({0x06, 0x10});
+  cpu.step();
+
+  REQUIRE(bus.read(0x0010) == 0x54); // 01010100
+  REQUIRE(cpu.getFlag(Cpu::Carry) == true);
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
 }
