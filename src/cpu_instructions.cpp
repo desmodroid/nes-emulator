@@ -1,5 +1,6 @@
 #include "bus.hpp"
 #include "cpu.hpp"
+#include <iostream>
 
 // ============================================================
 // Access Instructions
@@ -113,4 +114,26 @@ void Cpu::iny(uint16_t /* unused */) {
 void Cpu::dey(uint16_t /* unused */) {
   y -= 1;
   updateZeroNegativeFlags(y);
+}
+
+// ============================================================
+// Shift Instructions
+// ============================================================
+
+void Cpu::asl_a(uint16_t /* unused */) {
+  bool carryBit = (a & 0x80) != 0;
+  a = a << 1;
+
+  updateZeroNegativeFlags(a);
+  setFlag(Carry, carryBit);
+}
+
+void Cpu::asl(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+  bool carryBit = (memoryValue & 0x80) != 0;
+  memoryValue = memoryValue << 1;
+
+  updateZeroNegativeFlags(memoryValue);
+  setFlag(Carry, carryBit);
+  bus.write(addr, memoryValue);
 }
