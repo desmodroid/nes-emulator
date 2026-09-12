@@ -163,3 +163,28 @@ void Cpu::rol_a(uint16_t /* unused */) {
   updateZeroNegativeFlags(a);
   setFlag(Cpu::Carry, newCarry);
 }
+
+void Cpu::ror(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+
+  bool newCarry = (memoryValue & 0x01) != 0;
+  bool oldCarry = getFlag(Cpu::Carry);
+
+  memoryValue = memoryValue >> 1;
+  memoryValue |= (oldCarry ? 0x80 : 0);
+
+  updateZeroNegativeFlags(memoryValue);
+  setFlag(Cpu::Carry, newCarry);
+  bus.write(addr, memoryValue);
+}
+
+void Cpu::ror_a(uint16_t /* unused */) {
+  bool newCarry = (a & 0x01) != 0;
+  bool oldCarry = getFlag(Cpu::Carry);
+
+  a = a >> 1;
+  a |= (oldCarry ? 0x80 : 0);
+
+  updateZeroNegativeFlags(a);
+  setFlag(Cpu::Carry, newCarry);
+}
