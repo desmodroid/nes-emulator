@@ -225,4 +225,24 @@ private:
   /// @brief Subtract one rom the Y register
   /// @param unused placeholder parameter
   void dey(uint16_t /* unused */);
+
+  // ============================================================
+  // Shift Instructions
+  // ============================================================
+
+  /// @brief Shift all bits to the left by one position
+  /// @param addr The address of the value to shift
+  void asl(uint16_t addr);
+
+  /// @brief Shifts all bits to the right by one position
+  /// @param addr The address of the value to shift
+  void lsr(uint16_t addr);
+
+  /// @brief Rotates all the bits to the left by one position through the carry flag
+  /// @param addr The address of the value to rotate
+  void rol(uint16_t addr);
+
+  /// @brief Rotates all the bits to the right by one position through the carry flag
+  /// @param addr The address of the value to rotate
+  void ror(uint16_t addr);
 };
