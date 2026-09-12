@@ -103,11 +103,27 @@ void Cpu::buildTable() {
   // -------- Shift Instructions --------
   table[0x0A] = {[this]() { return accumulator();  }, [this](uint16_t v) { asl_a(v);}, 2, false};
   table[0x06] = {[this]() { return zeroPage();  }, [this](uint16_t v) { asl(v); }, 5, false};
-  table[0x16] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { asl(v); }, 5, false};
-  table[0x0E] = {[this]() { return absolute();  }, [this](uint16_t v) { asl(v); }, 5, false};
-  table[0x1E] = {[this]() { return absoluteX(); }, [this](uint16_t v) { asl(v); }, 5, false};
+  table[0x16] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { asl(v); }, 6, false};
+  table[0x0E] = {[this]() { return absolute();  }, [this](uint16_t v) { asl(v); }, 6, false};
+  table[0x1E] = {[this]() { return absoluteX(); }, [this](uint16_t v) { asl(v); }, 7, false};
 
-  table[0x26] = {[this]() { return zeroPage(); }, [this](uint16_t v) { rol(v); }, 5, false};
+  table[0x4A] = {[this]() { return accumulator();  }, [this](uint16_t v) { lsr_a(v);}, 2, false};
+  table[046] = {[this]() { return zeroPage();   }, [this](uint16_t v) { lsr(v); }, 5, false};
+  table[0x56] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { lsr(v); }, 6, false};
+  table[0xEE] = {[this]() { return absolute();  }, [this](uint16_t v) { lsr(v); }, 6, false};
+  table[0x5E] = {[this]() { return absoluteX(); }, [this](uint16_t v) { lsr(v); }, 7, false};
+
+  table[0x2A] = {[this]() { return accumulator(); }, [this](uint16_t v) { rol_a(v); }, 2, false};
+  table[0x26] = {[this]() { return zeroPage();  }, [this](uint16_t v) { rol(v); }, 5, false};
+  table[0x36] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { rol(v); }, 6, false};
+  table[0x2E] = {[this]() { return absolute();  }, [this](uint16_t v) { rol(v); }, 6, false};
+  table[0x3E] = {[this]() { return absoluteX(); }, [this](uint16_t v) { rol(v); }, 7, false};
+
+  table[0x6A] = {[this]() { return accumulator(); }, [this](uint16_t v) { ror_a(v); }, 2, false};
+  table[0x66] = {[this]() { return zeroPage();  }, [this](uint16_t v) { ror(v); }, 5, false};
+  table[0x76] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { ror(v); }, 6, false};
+  table[0x6E] = {[this]() { return absolute();  }, [this](uint16_t v) { ror(v); }, 6, false};
+  table[0x7E] = {[this]() { return absoluteX(); }, [this](uint16_t v) { ror(v); }, 7, false};
 
 
   // clang-format on
