@@ -138,6 +138,23 @@ void Cpu::asl(uint16_t addr) {
   bus.write(addr, memoryValue);
 }
 
+void Cpu::lsr_a(uint16_t /* unused */) {
+  bool carryBit = (a & 0x01) != 0;
+  a = a >> 1;
+
+  updateZeroNegativeFlags(a);
+  setFlag(Carry, carryBit);
+}
+void Cpu::lsr(uint16_t addr) {
+  uint8_t memoryValue = bus.read(addr);
+  bool carryBit = (memoryValue & 0x01) != 0;
+  memoryValue = memoryValue >> 1;
+
+  updateZeroNegativeFlags(memoryValue);
+  setFlag(Carry, carryBit);
+  bus.write(addr, memoryValue);
+}
+
 void Cpu::rol(uint16_t addr) {
   uint8_t memoryValue = bus.read(addr);
 
