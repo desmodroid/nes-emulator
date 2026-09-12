@@ -155,7 +155,7 @@ TEST_CASE_METHOD(CpuFixture, "ASL A shifts all bits left") {
   cpu.step();
 
   REQUIRE(cpu.getA() == 0xE2); // 11100010
-  REQUIRE(cpu.getFlag(Cpu::Carry) == true);
   REQUIRE(cpu.getFlag(Cpu::Negative) == true);
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Carry));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
 }
