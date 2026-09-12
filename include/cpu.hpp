@@ -12,13 +12,17 @@ class Cpu {
 public:
   // -------- Getters and Setters for testing --------
 
-  /// @brief Get accumulator register
-  /// @return The accumulator register, a
+  /// @brief Get accumulator register value
+  /// @return The accumulator register
   uint8_t getA() const { return a; }
 
   /// @brief Sets the accumulator
   /// @param value The value to set as the new accumulator
   void setA(uint8_t value) { a = value; }
+
+  /// @brief  Get the X register value
+  /// @return The X register
+  uint8_t getX() const { return x; }
 
   /// @brief Sets the program counter
   /// @param addr The address to set as the new program counter

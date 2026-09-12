@@ -88,3 +88,57 @@ TEST_CASE_METHOD(CpuFixture, "ADC sets overflow when two positives creates a neg
   REQUIRE_FALSE(cpu.getFlag(Cpu::Carry));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
 }
+
+TEST_CASE_METHOD(CpuFixture, "SBC subtracts with no underflow") {
+  cpu.setA(0x50);
+
+  // Does not subtract when carry is set
+  cpu.setFlag(Cpu::Carry, true);
+  loadBytes({0xE9, 0x30});
+  cpu.step();
+
+  REQUIRE(cpu.getA() == 0x20);
+  REQUIRE(cpu.getFlag(Cpu::Carry) == true);
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Overflow));
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
+}
+
+TEST_CASE_METHOD(CpuFixture, "SBC subtracts one when carry is cleared") {
+  cpu.setA(0x50);
+
+  // CLC, Subtracts one more when carry is clear
+  cpu.setFlag(Cpu::Carry, false);
+  loadBytes({0xE9, 0x30});
+  cpu.step();
+
+  REQUIRE(cpu.getA() == 0x1F);
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Carry));
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Overflow));
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
+}
+
+TEST_CASE_METHOD(CpuFixture, "SBC sets carry when underflows") {
+  cpu.setA(0x30);
+
+  // SEC dont clear
+  cpu.setFlag(Cpu::Carry, true);
+  loadBytes({0xE9, 0x40});
+  cpu.step();
+
+  REQUIRE(cpu.getA() == 0xF0);
+  REQUIRE(cpu.getFlag(Cpu::Carry) == true);
+  REQUIRE(cpu.getFlag(Cpu::Negative) == true);
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Overflow));
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
+}
+
+TEST_CASE_METHOD(CpuFixture, "INX increases memory by one") {
+  loadBytes({0xE8, 0x01});
+  cpu.step();
+
+  REQUIRE(cpu.getX() == 0x01);
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
+}
