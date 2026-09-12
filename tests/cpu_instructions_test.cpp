@@ -170,3 +170,16 @@ TEST_CASE_METHOD(CpuFixture, "ASL shifts all bits left") {
   REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
 }
+
+TEST_CASE_METHOD(CpuFixture, "ROL rotates all bits left") {
+  cpu.setFlag(Cpu::Carry, false);
+  bus.write(0x0010, 0xAA); // 10101010
+  loadBytes({0x26, 0x10});
+  cpu.step();
+  std::cout << std::bitset<8>(bus.read(0x0010)) << std::endl;
+
+  REQUIRE(bus.read(0x0010) == 0x54); // 01010100
+  REQUIRE(cpu.getFlag(Cpu::Carry) == true);
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
+}
