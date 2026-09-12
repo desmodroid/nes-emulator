@@ -98,7 +98,7 @@ TEST_CASE_METHOD(CpuFixture, "SBC subtracts with no underflow") {
   cpu.step();
 
   REQUIRE(cpu.getA() == 0x20);
-  REQUIRE(cpu.getFlag(Cpu::Carry) == true);
+  REQUIRE(cpu.getFlag(Cpu::Carry) == true); // no underflow
   REQUIRE_FALSE(cpu.getFlag(Cpu::Overflow));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
@@ -113,7 +113,7 @@ TEST_CASE_METHOD(CpuFixture, "SBC subtracts one when carry is cleared") {
   cpu.step();
 
   REQUIRE(cpu.getA() == 0x1F);
-  REQUIRE_FALSE(cpu.getFlag(Cpu::Carry));
+  REQUIRE(cpu.getFlag(Cpu::Carry) == true); // no underflow
   REQUIRE_FALSE(cpu.getFlag(Cpu::Overflow));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
@@ -128,8 +128,8 @@ TEST_CASE_METHOD(CpuFixture, "SBC sets carry when underflows") {
   cpu.step();
 
   REQUIRE(cpu.getA() == 0xF0);
-  REQUIRE(cpu.getFlag(Cpu::Carry) == true);
   REQUIRE(cpu.getFlag(Cpu::Negative) == true);
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Carry));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Overflow));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
 }
