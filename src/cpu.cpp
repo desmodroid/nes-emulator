@@ -108,9 +108,9 @@ void Cpu::buildTable() {
   table[0x1E] = {[this]() { return absoluteX(); }, [this](uint16_t v) { asl(v); }, 7, false};
 
   table[0x4A] = {[this]() { return accumulator();  }, [this](uint16_t v) { lsr_a(v);}, 2, false};
-  table[046] = {[this]() { return zeroPage();   }, [this](uint16_t v) { lsr(v); }, 5, false};
+  table[0x46] = {[this]() { return zeroPage();  }, [this](uint16_t v) { lsr(v); }, 5, false};
   table[0x56] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { lsr(v); }, 6, false};
-  table[0xEE] = {[this]() { return absolute();  }, [this](uint16_t v) { lsr(v); }, 6, false};
+  table[0x4E] = {[this]() { return absolute();  }, [this](uint16_t v) { lsr(v); }, 6, false};
   table[0x5E] = {[this]() { return absoluteX(); }, [this](uint16_t v) { lsr(v); }, 7, false};
 
   table[0x2A] = {[this]() { return accumulator(); }, [this](uint16_t v) { rol_a(v); }, 2, false};
@@ -144,14 +144,14 @@ void Cpu::buildTable() {
   table[0x01] = {[this]() { return indirectX(); }, [this](uint16_t v) { ora(v); }, 6, false};
   table[0x11] = {[this]() { return indirectY(); }, [this](uint16_t v) { ora(v); }, 5,  true};
 
-  table[0x49] = {[this]() { return immediate(); }, [this](uint16_t v) { ora(v); }, 2, false};
-  table[0x45] = {[this]() { return zeroPage();  }, [this](uint16_t v) { ora(v); }, 3, false};
-  table[0x55] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { ora(v); }, 4, false};
-  table[0x4D] = {[this]() { return absolute();  }, [this](uint16_t v) { ora(v); }, 4, false};
-  table[0x5D] = {[this]() { return absoluteX(); }, [this](uint16_t v) { ora(v); }, 4,  true};
-  table[0x59] = {[this]() { return absoluteY(); }, [this](uint16_t v) { ora(v); }, 4,  true};
-  table[0x41] = {[this]() { return indirectX(); }, [this](uint16_t v) { ora(v); }, 6, false};
-  table[0x51] = {[this]() { return indirectY(); }, [this](uint16_t v) { ora(v); }, 5,  true};
+  table[0x49] = {[this]() { return immediate(); }, [this](uint16_t v) { eor(v); }, 2, false};
+  table[0x45] = {[this]() { return zeroPage();  }, [this](uint16_t v) { eor(v); }, 3, false};
+  table[0x55] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { eor(v); }, 4, false};
+  table[0x4D] = {[this]() { return absolute();  }, [this](uint16_t v) { eor(v); }, 4, false};
+  table[0x5D] = {[this]() { return absoluteX(); }, [this](uint16_t v) { eor(v); }, 4,  true};
+  table[0x59] = {[this]() { return absoluteY(); }, [this](uint16_t v) { eor(v); }, 4,  true};
+  table[0x41] = {[this]() { return indirectX(); }, [this](uint16_t v) { eor(v); }, 6, false};
+  table[0x51] = {[this]() { return indirectY(); }, [this](uint16_t v) { eor(v); }, 5,  true};
 
   table[0x24] = {[this]() { return zeroPage();  }, [this](uint16_t v) { bit(v); }, 3, false};
   table[0x2c] = {[this]() { return absolute();  }, [this](uint16_t v) { bit(v); }, 4, false};
