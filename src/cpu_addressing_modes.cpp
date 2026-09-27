@@ -70,3 +70,10 @@ std::pair<uint16_t, bool> Cpu::indirectY() {
 std::pair<uint16_t, bool> Cpu::implied() { return {0, false}; }
 
 std::pair<uint16_t, bool> Cpu::accumulator() { return {0, false}; }
+
+std::pair<uint16_t, bool> Cpu::relative() {
+  int8_t offset = static_cast<int8_t>(bus.read(pc));
+  pc++;
+  uint16_t addr = pc + offset;
+  return {addr, false};
+}

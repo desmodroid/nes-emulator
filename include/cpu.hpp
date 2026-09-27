@@ -72,6 +72,9 @@ private:
   uint8_t sp = 0;     // Stack pointer
   uint8_t status = 0; // Status register
 
+  /// @brief Extra cycles if a branch has been taken and page has been crossed
+  int extraCycles = 0;
+
   /// @brief Opcode table with its addressing mode, execution and number of
   /// cycles.
   struct Instruction {
@@ -110,8 +113,7 @@ private:
   std::pair<uint16_t, bool> zeroPageY();
 
   /// @brief Absolute addressing mode
-  /// @return The 16 bit effective address of the operand and if the page has
-  /// been crossed
+  /// @return The 16 bit effective address of the operand and if the page has been crossed
   std::pair<uint16_t, bool> absolute();
 
   /// @brief Absolute X addressing mode: adds the X register to the address
@@ -121,8 +123,7 @@ private:
 
   /// @brief Absolute Y addressing mode: adds the Y register to the address
   /// provided by the operand
-  /// @return The 16 bit effective address of the operand and if the page has
-  /// been crossed
+  /// @return The 16 bit effective address of the operand and if the page has been crossed
   std::pair<uint16_t, bool> absoluteY();
 
   /// @brief Indirect X addressing mode: reads a 16 bit address from a zero page
@@ -132,8 +133,7 @@ private:
 
   /// @brief Indirect Y addressing mode: adds Y to the zero page pointer then
   /// reads a 16 bit address from that location
-  /// @return The 16 bit effective address of the operand and if the page has
-  /// been crossed
+  /// @return The 16 bit effective address of the operand and if the page has been crossed
   std::pair<uint16_t, bool> indirectY();
 
   /// @brief Implied addressing mode: used by instructions that have no address
@@ -144,6 +144,10 @@ private:
   /// @brief Accumulator addressing mode: operates directly on the accumulator
   /// @return A placeholder address, ignored by the instruction (e.g. ASL A)
   std::pair<uint16_t, bool> accumulator();
+
+  /// @brief Relative addressing mode: Specifies an 8 bit signed offset relative to the PC
+  /// @return The 16 bit effective address of the operand and if the page has been crossed
+  std::pair<uint16_t, bool> relative();
 
   // ============================================================
   // Access Instructions
@@ -303,4 +307,23 @@ private:
   /// @brief Compare Y to a memory value and set appropriate flags, does not touch any registers
   /// @param addr The address of the value
   void cpy(uint16_t addr);
+
+  // ============================================================
+  // Branch Instructions
+  // ============================================================
+
+  /// @brief Helper function for all branch instructions
+  /// Computes the
+  /// @param condition If a branch was taken
+  /// @param addr The 16 bit effective address of the operand
+  void branch(bool condition, uint16_t addr);
+
+  void bcc(uint16_t addr);
+  void bcs(uint16_t addr);
+  void beq(uint16_t addr);
+  void bne(uint16_t addr);
+  void bpl(uint16_t addr);
+  void bmi(uint16_t addr);
+  void bvc(uint16_t addr);
+  void bvs(uint16_t addr);
 };
