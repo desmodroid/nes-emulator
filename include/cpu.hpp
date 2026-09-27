@@ -146,7 +146,8 @@ private:
   std::pair<uint16_t, bool> accumulator();
 
   /// @brief Relative addressing mode: Specifies an 8 bit signed offset relative to the PC
-  /// @return The 16 bit effective address of the operand and if the page has been crossed
+  /// @return The 16 bit effective address of the operand. The page crossed bool is always false
+  /// here as the branch instuctions handle that themselves
   std::pair<uint16_t, bool> relative();
 
   // ============================================================

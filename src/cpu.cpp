@@ -174,6 +174,16 @@ void Cpu::buildTable() {
   table[0xC4] = {[this]() { return zeroPage();   }, [this](uint16_t v) { cpy(v); }, 3, false};
   table[0xCC] = {[this]() { return absolute();   }, [this](uint16_t v) { cpy(v); }, 4, false};
 
+  // -------- Branch Instructions --------
+  table[0x90] = {[this]() { return relative();  }, [this](uint16_t v) { bcc(v); }, 2, false};
+  table[0xB0] = {[this]() { return relative();  }, [this](uint16_t v) { bcs(v); }, 2, false};
+  table[0xF0] = {[this]() { return relative();  }, [this](uint16_t v) { beq(v); }, 2, false};
+  table[0xD0] = {[this]() { return relative();  }, [this](uint16_t v) { bne(v); }, 2, false};
+  table[0x10] = {[this]() { return relative();  }, [this](uint16_t v) { bpl(v); }, 2, false};
+  table[0x30] = {[this]() { return relative();  }, [this](uint16_t v) { bmi(v); }, 2, false};
+  table[0x50] = {[this]() { return relative();  }, [this](uint16_t v) { bvc(v); }, 2, false};
+  table[0x80] = {[this]() { return relative();  }, [this](uint16_t v) { bvs(v); }, 2, false};
+
   // clang-format on
 }
 
@@ -184,7 +194,9 @@ void Cpu::step() {
 
     return;
   }
+  extraCycles = 0;
   auto [addr, pageCrossed] = instruction.addressingMode();
   instruction.execute(addr);
-  uint8_t totalCycles = instruction.cycles + ((pageCrossed && instruction.canCrossPage) ? 1 : 0);
+  uint8_t totalCycles =
+      instruction.cycles + ((pageCrossed && instruction.canCrossPage) ? 1 : 0) + extraCycles;
 }
