@@ -267,3 +267,19 @@ void Cpu::cpy(uint16_t addr) {
   setFlag(Cpu::Zero, y == memoryValue);
   setFlag(Cpu::Negative, (result & 0x80) != 0);
 }
+
+// ============================================================
+// Branch Instructions
+// ============================================================
+
+void Cpu::branch(bool condition, uint16_t addr) {
+  if (!condition) {
+    return;
+  }
+  extraCycles += 1;
+  bool pageCrossed = (pc & 0xFF00) != (addr & 0xFF00);
+  if (pageCrossed) {
+    extraCycles += 1;
+  }
+  pc = addr;
+}
