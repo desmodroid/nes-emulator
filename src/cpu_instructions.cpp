@@ -283,3 +283,5 @@ void Cpu::branch(bool condition, uint16_t addr) {
   }
   pc = addr;
 }
+
+void Cpu::bcc(uint16_t addr) { branch(!getFlag(Carry), addr); }

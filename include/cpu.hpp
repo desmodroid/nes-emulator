@@ -313,11 +313,13 @@ private:
   // ============================================================
 
   /// @brief Helper function for all branch instructions
-  /// Computes the
-  /// @param condition If a branch was taken
+  /// If condition is true, jumps pc to addr and add cycles if needed
+  /// @param condition The condition to determine to branch
   /// @param addr The 16 bit effective address of the operand
   void branch(bool condition, uint16_t addr);
 
+  /// @brief Branches if carry is clear
+  /// @param addr The 16 bit effective address of the operand
   void bcc(uint16_t addr);
   void bcs(uint16_t addr);
   void beq(uint16_t addr);
