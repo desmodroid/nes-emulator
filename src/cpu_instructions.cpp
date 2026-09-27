@@ -285,13 +285,17 @@ void Cpu::branch(bool condition, uint16_t addr) {
 }
 
 void Cpu::bcc(uint16_t addr) { branch(!getFlag(Carry), addr); }
+
 void Cpu::bcs(uint16_t addr) { branch(getFlag(Carry), addr); }
 
 void Cpu::beq(uint16_t addr) { branch(getFlag(Zero), addr); }
+
 void Cpu::bne(uint16_t addr) { branch(!getFlag(Zero), addr); }
 
 void Cpu::bpl(uint16_t addr) { branch(!getFlag(Negative), addr); }
+
 void Cpu::bmi(uint16_t addr) { branch(getFlag(Negative), addr); }
 
 void Cpu::bvc(uint16_t addr) { branch(!getFlag(Overflow), addr); }
+
 void Cpu::bvs(uint16_t addr) { branch(getFlag(Overflow), addr); }

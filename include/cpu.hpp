@@ -350,4 +350,18 @@ private:
   /// @brief Branch if the overflow flag is set
   /// @param addr The 16 bit effective address of the operand
   void bvs(uint16_t addr);
+
+  // ============================================================
+  // Jump Instructions
+  // ============================================================
+
+  void jmp(uint16_t addr);
+
+  void jsr(uint16_t addr);
+
+  void rts(uint16_t addr);
+
+  void brk(uint16_t addr);
+
+  void rti(uint16_t addr);
 };
