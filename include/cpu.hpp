@@ -322,11 +322,32 @@ private:
   /// @brief Branches if carry is clear
   /// @param addr The 16 bit effective address of the operand
   void bcc(uint16_t addr);
+
+  /// @brief Branches if carry is set
+  /// @param addr The 16 bit effective address of the operand
   void bcs(uint16_t addr);
+
+  /// @brief Branches if the zero flag is set
+  /// @param addr The 16 bit effective address of the operand
   void beq(uint16_t addr);
+
+  /// @brief Branches if the zero flag is clear
+  /// @param addr The 16 bit effective address of the operand
   void bne(uint16_t addr);
+
+  /// @brief Branches if the negative flag is clear
+  /// @param addr The 16 bit effective address of the operand
   void bpl(uint16_t addr);
+
+  /// @brief Branch is the negative flag is set
+  /// @param addr The 16 bit effective address of the operand
   void bmi(uint16_t addr);
+
+  /// @brief Branch if the overflow flag is clear
+  /// @param addr The 16 bit effective address of the operand
   void bvc(uint16_t addr);
+
+  /// @brief Branch if the overflow flag is set
+  /// @param addr The 16 bit effective address of the operand
   void bvs(uint16_t addr);
 };
