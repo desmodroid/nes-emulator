@@ -67,6 +67,27 @@ std::pair<uint16_t, bool> Cpu::indirectY() {
   return {addr, pageCrossed};
 }
 
+std::pair<uint16_t, bool> Cpu::indirect() {
+  uint8_t lowPtr = bus.read(pc++);
+  uint8_t highPtr = bus.read(pc++);
+  uint16_t ptr = (highPtr << 8) | lowPtr;
+
+  uint8_t low = bus.read(ptr);
+  uint16_t highAddr;
+
+  if (ptr & 0xFF == 0xFF) {
+    // low byte of ptr is 0xFF and so the CPU wraps around to the
+    // start of the SAME page instead of crossing into the next one
+    highAddr = ptr & 0xFF00;
+  } else {
+    highAddr = ptr + 1;
+  }
+
+  uint8_t high = bus.read(highAddr);
+  uint16_t addr = (high << 8) | low;
+  return {addr, false};
+}
+
 std::pair<uint16_t, bool> Cpu::implied() { return {0, false}; }
 
 std::pair<uint16_t, bool> Cpu::accumulator() { return {0, false}; }

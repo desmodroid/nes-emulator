@@ -3,6 +3,21 @@
 #include <iostream>
 
 // ============================================================
+// Helpers
+// ============================================================
+
+void Cpu::push(uint8_t byte) {
+  bus.write(StackBase | sp, byte);
+  sp--;
+}
+
+uint8_t Cpu::pull() {
+  uint8_t stackByte = bus.read(StackBase | sp);
+  sp++;
+  return stackByte;
+}
+
+// ============================================================
 // Access Instructions
 // ============================================================
 
@@ -299,3 +314,19 @@ void Cpu::bmi(uint16_t addr) { branch(getFlag(Negative), addr); }
 void Cpu::bvc(uint16_t addr) { branch(!getFlag(Overflow), addr); }
 
 void Cpu::bvs(uint16_t addr) { branch(getFlag(Overflow), addr); }
+
+// ============================================================
+// Jump Instructions
+// ============================================================
+
+void Cpu::jmp(uint16_t addr) { pc = addr; }
+
+void Cpu::jsr(uint16_t addr) {
+  uint16_t returnAddr = pc - 1;
+  uint8_t highByte = returnAddr >> 8;
+  uint8_t lowByte = returnAddr & 0xFF;
+
+  push(highByte);
+  push(lowByte);
+  pc = addr;
+}

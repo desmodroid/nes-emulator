@@ -90,6 +90,16 @@ private:
   /// @brief Populates table with all implemented opcodes
   void buildTable();
 
+  // -------- Stack helpers --------
+  /// @brief Writes a byte to the stack and decrements the stack pointer
+  /// @param byte The byte to push to the stack
+  void push(uint8_t byte);
+
+  /// @brief Increments the stack pointer and reads the byte from the stack
+  uint8_t pull();
+
+  static constexpr uint16_t StackBase = 0x0100;
+
   // ============================================================
   // Addressing Modes
   // ============================================================
@@ -135,6 +145,8 @@ private:
   /// reads a 16 bit address from that location
   /// @return The 16 bit effective address of the operand and if the page has been crossed
   std::pair<uint16_t, bool> indirectY();
+
+  std::pair<uint16_t, bool> indirect();
 
   /// @brief Implied addressing mode: used by instructions that have no address
   /// operand

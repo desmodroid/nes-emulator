@@ -184,6 +184,12 @@ void Cpu::buildTable() {
   table[0x50] = {[this]() { return relative();  }, [this](uint16_t v) { bvc(v); }, 2, false};
   table[0x80] = {[this]() { return relative();  }, [this](uint16_t v) { bvs(v); }, 2, false};
 
+  // -------- Jump Instructions --------
+  table[0x4C] = {[this]() { return absolute();  }, [this](uint16_t v) { jmp(v); }, 3, false};
+  table[0x6C] = {[this]() { return absolute();  }, [this](uint16_t v) { jmp(v); }, 5, false};
+
+
+
   // clang-format on
 }
 
