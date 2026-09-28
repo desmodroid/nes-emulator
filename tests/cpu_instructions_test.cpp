@@ -1,5 +1,6 @@
 #include "bus.hpp"
 #include "cpu.hpp"
+#include <bitset>
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
 
@@ -176,10 +177,40 @@ TEST_CASE_METHOD(CpuFixture, "ROL rotates all bits left") {
   bus.write(0x0010, 0xAA); // 10101010
   loadBytes({0x26, 0x10});
   cpu.step();
-  std::cout << std::bitset<8>(bus.read(0x0010)) << std::endl;
+  // std::cout << std::bitset<8>(bus.read(0x0010)) << std::endl;
 
   REQUIRE(bus.read(0x0010) == 0x54); // 01010100
   REQUIRE(cpu.getFlag(Cpu::Carry) == true);
   REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
+}
+
+// ============================================================
+// Jump Instructions
+// ============================================================
+
+TEST_CASE_METHOD(CpuFixture, "JMP absolute jumps to the correct address") {
+  loadBytes({0x4C, 0x00, 0x03}); // JMP 0x0300
+  cpu.step();
+
+  REQUIRE(cpu.getPC() == 0x0300);
+}
+
+TEST_CASE_METHOD(CpuFixture, "JMP indirect jumps to the address stored at the pointer") {
+  bus.write(0x0350, 0x34); // at 0x0350 write 0x1234
+  bus.write(0x0351, 0x12);
+  loadBytes({0x6C, 0x50, 0x03}); // JMP 0x0350
+  cpu.step();
+
+  REQUIRE(cpu.getPC() == 0x1234);
+}
+
+TEST_CASE_METHOD(CpuFixture, "JMP indirect wraps when the address ends in 0xFF") {
+  bus.write(0x03FF, 0x34);       // address ends in FF
+  bus.write(0x0300, 0x12);       // wrap around to the start of the page
+  bus.write(0x0400, 0x99);       // Next page (usual case of ptr + 1)
+  loadBytes({0x6C, 0xFF, 0x03}); // JMP 0x03FF
+  cpu.step();
+
+  REQUIRE(cpu.getPC() == 0x1234);
 }

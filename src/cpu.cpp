@@ -186,7 +186,7 @@ void Cpu::buildTable() {
 
   // -------- Jump Instructions --------
   table[0x4C] = {[this]() { return absolute();  }, [this](uint16_t v) { jmp(v); }, 3, false};
-  table[0x6C] = {[this]() { return absolute();  }, [this](uint16_t v) { jmp(v); }, 5, false};
+  table[0x6C] = {[this]() { return indirect();  }, [this](uint16_t v) { jmp(v); }, 5, false};
 
 
 

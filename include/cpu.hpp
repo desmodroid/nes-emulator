@@ -28,6 +28,8 @@ public:
   /// @param addr The address to set as the new program counter
   void setPC(uint16_t addr) { pc = addr; }
 
+  uint16_t getPC() const { return pc; }
+
   /// @brief Status flags stored in the register
   enum StatusFlag : uint8_t {
     Carry = 1 << 0,     // Set when an addition produces a carry
