@@ -191,6 +191,8 @@ void Cpu::buildTable() {
   table[0x20] = {[this]() { return absolute();  }, [this](uint16_t v) { jsr(v); }, 6, false};
   table[0x60] = {[this]() { return implied();   }, [this](uint16_t v) { rts(v); }, 6, false};
 
+  // Uses immediate instead of implied to avoid a redundant pc++ inside brk()
+  table[0x00] = {[this]() { return immediate(); }, [this](uint16_t v) { brk(v); }, 7, false};
   // clang-format on
 }
 

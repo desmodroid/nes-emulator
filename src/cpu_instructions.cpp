@@ -339,13 +339,12 @@ void Cpu::rts(uint16_t /* unused */) {
 }
 
 void Cpu::brk(uint16_t /* unused */) {
-  pc++;
   uint8_t highByte = pc >> 8;
   uint8_t lowByte = pc & 0xFF;
   push(highByte);
   push(lowByte);
 
-  // Flag only eists in the byte pushed to the stack, not real state in the CPU 
+  // Flag only exists in the byte pushed to the stack, not real state in the CPU
   uint8_t pushedStatus = status | Break | Unused;
   push(pushedStatus);
   setFlag(Interrupt, true);
