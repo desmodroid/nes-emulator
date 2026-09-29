@@ -337,3 +337,20 @@ void Cpu::rts(uint16_t /* unused */) {
   uint16_t addr = (highByte << 8) | lowByte;
   pc = addr + 1;
 }
+
+void Cpu::brk(uint16_t /* unused */) {
+  pc++;
+  uint8_t highByte = pc >> 8;
+  uint8_t lowByte = pc & 0xFF;
+  push(highByte);
+  push(lowByte);
+
+  // Flag only eists in the byte pushed to the stack, not real state in the CPU 
+  uint8_t pushedStatus = status | Break | Unused;
+  push(pushedStatus);
+  setFlag(Interrupt, true);
+
+  uint8_t low = bus.read(0xFFFE);
+  uint8_t high = bus.read(0xFFFF);
+  pc = (high << 8) | low;
+}

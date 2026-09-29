@@ -375,11 +375,17 @@ private:
   // Jump Instructions
   // ============================================================
 
+  /// @brief Jumps PC to a new addr
+  /// @param addr The 16 bit effective target address
   void jmp(uint16_t addr);
 
+  /// @brief Pushes the return address onto the stack and jumps PC to addr
+  /// @param addr The 16 bit effective target address
   void jsr(uint16_t addr);
 
-  void rts(uint16_t addr);
+  /// @brief Pulls the return address off of the stack and resumes at that instruction
+  /// @param placeholder parameter
+  void rts(uint16_t /* unused */);
 
   void brk(uint16_t addr);
 
