@@ -203,19 +203,15 @@ private:
   // ============================================================
 
   /// @brief Copies the accumulator value to the X register
-  /// @param unused placeholder parameter
   void tax(uint16_t /* unused */);
 
   /// @brief Copies the X register value to the accumulator
-  /// @param unused placeholder parameter
   void txa(uint16_t /* unused */);
 
   /// @brief Copies the accumulator value to the Y register
-  /// @param unused placeholder parameter
   void tay(uint16_t /* unused */);
 
   /// @brief Copies the Y register value to the accumulator
-  /// @param unused placeholder parameter
   void tya(uint16_t /* unused */);
 
   // ============================================================
@@ -240,19 +236,15 @@ private:
   void dec(uint16_t addr);
 
   /// @brief Adds one to a X register
-  /// @param unused placeholder parameter
   void inx(uint16_t /* unused */);
 
   /// @brief Subtract one rom the X register
-  /// @param unused placeholder parameter
   void dex(uint16_t /* unused */);
 
   /// @brief Adds one to a Y register
-  /// @param unused placeholder parameter
   void iny(uint16_t /* unused */);
 
   /// @brief Subtract one rom the Y register
-  /// @param unused placeholder parameter
   void dey(uint16_t /* unused */);
 
   // ============================================================
@@ -264,7 +256,6 @@ private:
   void asl(uint16_t addr);
 
   /// @brief Shift all bits of the accumulator to the left by one position
-  /// @param addr placeholder parameter
   void asl_a(uint16_t /* unused */);
 
   /// @brief Shifts all bits to the right by one position
@@ -272,7 +263,6 @@ private:
   void lsr(uint16_t addr);
 
   /// @brief Shifts all bits of the accumulator to the right by one position
-  /// @param addr The address of the value to shift
   void lsr_a(uint16_t /* unused */);
 
   /// @brief Rotates all the bits to the left by one position through the carry flag
@@ -281,7 +271,6 @@ private:
 
   /// @brief Rotates all the bits of the accumulator to the left by one position through the carry
   /// flag
-  /// @param addr placeholder parameter
   void rol_a(uint16_t /* unused */);
 
   /// @brief Rotates all the bits to the right by one position through the carry flag
@@ -290,7 +279,6 @@ private:
 
   /// @brief Rotates all the bits of the accumulator to the right by one position through the carry
   /// flag
-  /// @param addr placeholder parameter
   void ror_a(uint16_t /* unused */);
 
   // ============================================================
