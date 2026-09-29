@@ -218,3 +218,12 @@ void Cpu::step() {
   uint8_t totalCycles =
       instruction.cycles + ((pageCrossed && instruction.canCrossPage) ? 1 : 0) + extraCycles;
 }
+
+void Cpu::reset() {
+  a = x = y = 0;
+  uint8_t lowPC = bus.read(0xFFFC);
+  uint8_t highPC = bus.read(0xFFFD);
+  pc = (highPC << 8) | lowPC;
+  sp -= 3;
+  setFlag(Interrupt, true);
+}

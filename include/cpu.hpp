@@ -69,6 +69,9 @@ public:
   /// @brief Fetches an opcode, decodes it and executes it
   void step();
 
+  /// @brief Resets the system
+  void reset();
+
 private:
   Bus& bus;
 
