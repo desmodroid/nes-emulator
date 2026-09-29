@@ -384,10 +384,15 @@ private:
   void jsr(uint16_t addr);
 
   /// @brief Pulls the return address off of the stack and resumes at that instruction
-  /// @param placeholder parameter
+  /// @param addr placeholder parameter
   void rts(uint16_t /* unused */);
 
-  void brk(uint16_t addr);
+  /// @brief Pushes the return address and status onto the stack then
+  /// jumps to the address stored at 0xFFFE
+  ///  @param addr placeholder paramter
+  void brk(uint16_t /* unusued */);
 
-  void rti(uint16_t addr);
+  /// @brief Pulls status and return address from the stack and resumes from there
+  /// @param addr placeholder parameter
+  void rti(uint16_t /* unused */);
 };

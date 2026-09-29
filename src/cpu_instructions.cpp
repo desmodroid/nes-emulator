@@ -353,3 +353,10 @@ void Cpu::brk(uint16_t /* unused */) {
   uint8_t high = bus.read(0xFFFF);
   pc = (high << 8) | low;
 }
+
+void Cpu::rti(uint16_t /* unused */) {
+  status = pull();
+  uint8_t lowByte = pull();
+  uint8_t highByte = pull();
+  pc = (highByte << 8) | lowByte;
+}
