@@ -1,24 +1,7 @@
-#include "bus.hpp"
-#include "cpu.hpp"
+#include "cpu_fixture.hpp"
 #include <bitset>
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
-
-struct CpuFixture {
-  Bus bus;
-  Cpu cpu;
-  uint16_t writeAddr = 0x200;
-
-  CpuFixture() : cpu(bus) { cpu.setPC(0x200); }
-
-  /// @brief Allows to load multiple bytes
-  /// @param bytes The list of bytes to load
-  void loadBytes(std::initializer_list<uint8_t> bytes) {
-    for (uint8_t b : bytes) {
-      bus.write(writeAddr++, b);
-    }
-  }
-};
 
 // ============================================================
 // Access Instructions
@@ -28,7 +11,7 @@ TEST_CASE_METHOD(CpuFixture, "LDA immediate loads a value into A") {
   loadBytes({0xA9, 0x05});
   cpu.step();
 
-  REQUIRE(cpu.getA() == 0x05);
+  REQUIRE(cpu.state().a == 0x05);
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
 }
@@ -37,7 +20,7 @@ TEST_CASE_METHOD(CpuFixture, "LDA immediate sets zero flag when loading zero") {
   loadBytes({0xA9, 0x00});
   cpu.step();
 
-  REQUIRE(cpu.getA() == 0x00);
+  REQUIRE(cpu.state().a == 0x00);
   REQUIRE(cpu.getFlag(Cpu::Zero));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
 }
@@ -46,7 +29,7 @@ TEST_CASE_METHOD(CpuFixture, "LDA immediate sets negative flag when loading nega
   loadBytes({0xA9, 0x80});
   cpu.step();
 
-  REQUIRE(cpu.getA() == 0x80);
+  REQUIRE(cpu.state().a == 0x80);
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
   REQUIRE(cpu.getFlag(Cpu::Negative) == true);
 }
@@ -56,11 +39,11 @@ TEST_CASE_METHOD(CpuFixture, "LDA immediate sets negative flag when loading nega
 // ============================================================
 
 TEST_CASE_METHOD(CpuFixture, "ADC adds two positives with no carry or overflow") {
-  cpu.setA(0x010);
+  setA(0x010);
   loadBytes({0x69, 0x20});
   cpu.step();
 
-  REQUIRE(cpu.getA() == 0x30);
+  REQUIRE(cpu.state().a == 0x30);
   REQUIRE_FALSE(cpu.getFlag(Cpu::Overflow));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Carry));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
@@ -68,11 +51,11 @@ TEST_CASE_METHOD(CpuFixture, "ADC adds two positives with no carry or overflow")
 }
 
 TEST_CASE_METHOD(CpuFixture, "ADC sets carry on unsigned overflow") {
-  cpu.setA(0xFF);
+  setA(0xFF);
   loadBytes({0x69, 0x01});
   cpu.step();
 
-  REQUIRE(cpu.getA() == 0x00);
+  REQUIRE(cpu.state().a == 0x00);
   REQUIRE(cpu.getFlag(Cpu::Carry));
   REQUIRE(cpu.getFlag(Cpu::Zero));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Overflow));
@@ -80,11 +63,11 @@ TEST_CASE_METHOD(CpuFixture, "ADC sets carry on unsigned overflow") {
 }
 
 TEST_CASE_METHOD(CpuFixture, "ADC sets overflow when two positives creates a negative ") {
-  cpu.setA(0x50);
+  setA(0x50);
   loadBytes({0x69, 0x50});
   cpu.step();
 
-  REQUIRE(cpu.getA() == 0xA0);
+  REQUIRE(cpu.state().a == 0xA0);
   REQUIRE(cpu.getFlag(Cpu::Overflow));
   REQUIRE(cpu.getFlag(Cpu::Negative));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Carry));
@@ -92,14 +75,14 @@ TEST_CASE_METHOD(CpuFixture, "ADC sets overflow when two positives creates a neg
 }
 
 TEST_CASE_METHOD(CpuFixture, "SBC subtracts with no underflow") {
-  cpu.setA(0x50);
+  setA(0x50);
 
   // Does not subtract when carry is set
   cpu.setFlag(Cpu::Carry, true);
   loadBytes({0xE9, 0x30});
   cpu.step();
 
-  REQUIRE(cpu.getA() == 0x20);
+  REQUIRE(cpu.state().a == 0x20);
   REQUIRE(cpu.getFlag(Cpu::Carry) == true); // no underflow
   REQUIRE_FALSE(cpu.getFlag(Cpu::Overflow));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
@@ -107,14 +90,14 @@ TEST_CASE_METHOD(CpuFixture, "SBC subtracts with no underflow") {
 }
 
 TEST_CASE_METHOD(CpuFixture, "SBC subtracts one when carry is cleared") {
-  cpu.setA(0x50);
+  setA(0x50);
 
   // CLC, Subtracts one more when carry is clear
   cpu.setFlag(Cpu::Carry, false);
   loadBytes({0xE9, 0x30});
   cpu.step();
 
-  REQUIRE(cpu.getA() == 0x1F);
+  REQUIRE(cpu.state().a == 0x1F);
   REQUIRE(cpu.getFlag(Cpu::Carry) == true); // no underflow
   REQUIRE_FALSE(cpu.getFlag(Cpu::Overflow));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
@@ -122,14 +105,14 @@ TEST_CASE_METHOD(CpuFixture, "SBC subtracts one when carry is cleared") {
 }
 
 TEST_CASE_METHOD(CpuFixture, "SBC sets carry when underflows") {
-  cpu.setA(0x30);
+  setA(0x30);
 
   // SEC dont clear
   cpu.setFlag(Cpu::Carry, true);
   loadBytes({0xE9, 0x40});
   cpu.step();
 
-  REQUIRE(cpu.getA() == 0xF0);
+  REQUIRE(cpu.state().a == 0xF0);
   REQUIRE(cpu.getFlag(Cpu::Negative) == true);
   REQUIRE_FALSE(cpu.getFlag(Cpu::Carry));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Overflow));
@@ -140,7 +123,7 @@ TEST_CASE_METHOD(CpuFixture, "INX increases memory by one") {
   loadBytes({0xE8});
   cpu.step();
 
-  REQUIRE(cpu.getX() == 0x01);
+  REQUIRE(cpu.state().x == 0x01);
   REQUIRE_FALSE(cpu.getFlag(Cpu::Negative));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
 }
@@ -151,11 +134,11 @@ TEST_CASE_METHOD(CpuFixture, "INX increases memory by one") {
 
 TEST_CASE_METHOD(CpuFixture, "ASL A shifts all bits left") {
 
-  cpu.setA(0x71); // 01110001
+  setA(0x71); // 01110001
   loadBytes({0x0A});
   cpu.step();
 
-  REQUIRE(cpu.getA() == 0xE2); // 11100010
+  REQUIRE(cpu.state().a == 0xE2); // 11100010
   REQUIRE(cpu.getFlag(Cpu::Negative) == true);
   REQUIRE_FALSE(cpu.getFlag(Cpu::Carry));
   REQUIRE_FALSE(cpu.getFlag(Cpu::Zero));
@@ -193,7 +176,7 @@ TEST_CASE_METHOD(CpuFixture, "JMP absolute jumps to the correct address") {
   loadBytes({0x4C, 0x00, 0x03}); // JMP 0x0300
   cpu.step();
 
-  REQUIRE(cpu.getPC() == 0x0300);
+  REQUIRE(cpu.state().pc == 0x0300);
 }
 
 TEST_CASE_METHOD(CpuFixture, "JMP indirect jumps to the address stored at the pointer") {
@@ -202,7 +185,7 @@ TEST_CASE_METHOD(CpuFixture, "JMP indirect jumps to the address stored at the po
   loadBytes({0x6C, 0x50, 0x03}); // JMP 0x0350
   cpu.step();
 
-  REQUIRE(cpu.getPC() == 0x1234);
+  REQUIRE(cpu.state().pc == 0x1234);
 }
 
 TEST_CASE_METHOD(CpuFixture, "JMP indirect wraps when the address ends in 0xFF") {
@@ -212,18 +195,18 @@ TEST_CASE_METHOD(CpuFixture, "JMP indirect wraps when the address ends in 0xFF")
   loadBytes({0x6C, 0xFF, 0x03}); // JMP 0x03FF
   cpu.step();
 
-  REQUIRE(cpu.getPC() == 0x1234);
+  REQUIRE(cpu.state().pc == 0x1234);
 }
 
 TEST_CASE_METHOD(CpuFixture, "JSR pushes the return address and jumps to the new target") {
-  cpu.setPC(0x1000);
+  setPC(0x1000);
   writeAddr = 0x1000; // overwrite because 0x200 jumps to 0x0202, the high and low bytes are
                       // identical and cant differentiate
   loadBytes({0x20, 0x00, 0x30});
   cpu.step();
 
-  REQUIRE(cpu.getPC() == 0x3000);
-  REQUIRE(cpu.getSP() == 0xFE);      // stack decreases by one
+  REQUIRE(cpu.state().pc == 0x3000);
+  REQUIRE(cpu.state().sp == 0xFE);   // stack decreases by one
   REQUIRE(bus.read(0x0100) == 0x10); // 0x1000 jumps to 0x1002
   REQUIRE(bus.read(0x01FF) == 0x02);
 }
@@ -234,11 +217,11 @@ TEST_CASE_METHOD(CpuFixture, "BRK jumps to the address at 0xFFFE") {
   loadBytes({0x00, 0x00});
   cpu.step();
 
-  REQUIRE(cpu.getPC() == 0x1234);
+  REQUIRE(cpu.state().pc == 0x1234);
 }
 
 TEST_CASE_METHOD(CpuFixture, "BRK pushes the return address after skipping the padding byte") {
-  cpu.setPC(0x1000);
+  setPC(0x1000);
   writeAddr = 0x1000;
   loadBytes({0x00, 0x00}); // BRK + padding byte
   cpu.step();
