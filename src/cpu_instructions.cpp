@@ -12,8 +12,8 @@ void Cpu::push(uint8_t byte) {
 }
 
 uint8_t Cpu::pull() {
-  uint8_t stackByte = bus.read(StackBase | sp);
   sp++;
+  uint8_t stackByte = bus.read(StackBase | sp);
   return stackByte;
 }
 
