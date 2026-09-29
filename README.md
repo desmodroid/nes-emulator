@@ -18,7 +18,6 @@ All addressing modes are implemented.
 All official instructions are implemented.
 
 TODO: 
-- CPU `reset()`
 - interrupts
 - unofficial/illegal opcodes
 
