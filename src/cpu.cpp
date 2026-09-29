@@ -174,12 +174,12 @@ void Cpu::buildTable() {
   table[0x6C] = {[this]() { return indirect();  }, [this](uint16_t v) { jmp(v); }, 5, false};
 
   table[0x20] = {[this]() { return absolute();  }, [this](uint16_t v) { jsr(v); }, 6, false};
-  
+
   table[0x60] = {[this]() { return implied();   }, [this](uint16_t v) { rts(v); }, 6, false};
 
   // Uses immediate instead of implied to avoid a redundant pc++ inside brk()
   table[0x00] = {[this]() { return immediate(); }, [this](uint16_t v) { brk(v); }, 7, false};
-  
+
   table[0x40] = {[this]() { return implied();   }, [this](uint16_t v) { rti(v); }, 6, false};
 
   // -------- Stack Instructions --------
@@ -206,7 +206,7 @@ void Cpu::buildTable() {
 }
 
 void Cpu::step() {
-  uint8_t opcode = bus.read(pc++);
+  uint8_t opcode = bus.read(reg.pc++);
   Instruction& instruction = table[opcode];
   if (!instruction.execute) {
 
@@ -221,18 +221,18 @@ void Cpu::step() {
 
 void Cpu::reset(bool isSoftReset) {
   if (!isSoftReset) {
-    a = x = y = 0;
-    sp = 0xFD;
+    reg.a = reg.x = reg.y = 0;
+    reg.sp = 0xFD;
     setFlag(Carry, false);
     setFlag(Zero, false);
     setFlag(Decimal, false);
     setFlag(Overflow, false);
     setFlag(Negative, false);
   } else {
-    sp -= 3;
+    reg.sp -= 3;
   }
   uint8_t lowPC = bus.read(0xFFFC);
   uint8_t highPC = bus.read(0xFFFD);
-  pc = (highPC << 8) | lowPC;
+  reg.pc = (highPC << 8) | lowPC;
   setFlag(Interrupt, true);
 }

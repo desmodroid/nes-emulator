@@ -6,13 +6,13 @@
 // Helpers
 // ============================================================
 
-bool Cpu::getFlag(StatusFlag flag) const { return (status & flag) != 0; }
+bool Cpu::getFlag(StatusFlag flag) const { return (reg.status & flag) != 0; }
 
 void Cpu::setFlag(StatusFlag flag, bool value) {
   if (value) {
-    status |= flag;
+    reg.status |= flag;
   } else {
-    status &= ~flag;
+    reg.status &= ~flag;
   }
 }
 
@@ -22,65 +22,65 @@ void Cpu::updateZeroNegativeFlags(uint8_t value) {
 }
 
 void Cpu::push(uint8_t byte) {
-  bus.write(StackBase | sp, byte);
-  sp--;
+  bus.write(StackBase | reg.sp, byte);
+  reg.sp--;
 }
 
 uint8_t Cpu::pull() {
-  sp++;
-  uint8_t stackByte = bus.read(StackBase | sp);
+  reg.sp++;
+  uint8_t stackByte = bus.read(StackBase | reg.sp);
   return stackByte;
 }
 
-uint8_t Cpu::statusForPush() { return status | Break | Unused; }
+uint8_t Cpu::statusForPush() { return reg.status | Break | Unused; }
 
 // ============================================================
 // Access Instructions
 // ============================================================
 
 void Cpu::lda(uint16_t addr) {
-  a = bus.read(addr);
-  updateZeroNegativeFlags(a);
+  reg.a = bus.read(addr);
+  updateZeroNegativeFlags(reg.a);
 }
 
-void Cpu::sta(uint16_t addr) { bus.write(addr, a); }
+void Cpu::sta(uint16_t addr) { bus.write(addr, reg.a); }
 
 void Cpu::ldx(uint16_t addr) {
-  x = bus.read(addr);
-  updateZeroNegativeFlags(x);
+  reg.x = bus.read(addr);
+  updateZeroNegativeFlags(reg.x);
 }
 
-void Cpu::stx(uint16_t addr) { bus.write(addr, x); }
+void Cpu::stx(uint16_t addr) { bus.write(addr, reg.x); }
 
 void Cpu::ldy(uint16_t addr) {
-  y = bus.read(addr);
-  updateZeroNegativeFlags(y);
+  reg.y = bus.read(addr);
+  updateZeroNegativeFlags(reg.y);
 }
 
-void Cpu::sty(uint16_t addr) { bus.write(addr, y); }
+void Cpu::sty(uint16_t addr) { bus.write(addr, reg.y); }
 
 // ============================================================
 // Transfer Instructions
 // ============================================================
 
 void Cpu::tax(uint16_t /* unused */) {
-  x = a;
-  updateZeroNegativeFlags(x);
+  reg.x = reg.a;
+  updateZeroNegativeFlags(reg.x);
 }
 
 void Cpu::txa(uint16_t /* unused */) {
-  a = x;
-  updateZeroNegativeFlags(a);
+  reg.a = reg.x;
+  updateZeroNegativeFlags(reg.a);
 }
 
 void Cpu::tay(uint16_t /* unused */) {
-  y = a;
-  updateZeroNegativeFlags(y);
+  reg.y = reg.a;
+  updateZeroNegativeFlags(reg.y);
 }
 
 void Cpu::tya(uint16_t /* unused */) {
-  a = y;
-  updateZeroNegativeFlags(a);
+  reg.a = reg.y;
+  updateZeroNegativeFlags(reg.a);
 }
 
 // ============================================================
@@ -90,12 +90,12 @@ void Cpu::tya(uint16_t /* unused */) {
 void Cpu::adc(uint16_t addr) {
   uint8_t memoryValue = bus.read(addr);
   uint8_t carryBit = getFlag(Carry) ? 1 : 0;
-  uint16_t sum = a + memoryValue + carryBit;
+  uint16_t sum = reg.a + memoryValue + carryBit;
   uint8_t result = static_cast<uint8_t>(sum);
-  bool overflow = ((a ^ result) & (result ^ memoryValue) & 0x80) != 0;
-  a = result;
+  bool overflow = ((reg.a ^ result) & (result ^ memoryValue) & 0x80) != 0;
+  reg.a = result;
 
-  updateZeroNegativeFlags(a);
+  updateZeroNegativeFlags(reg.a);
   setFlag(Carry, sum > 0xFF);
   setFlag(Overflow, overflow);
 }
@@ -104,12 +104,12 @@ void Cpu::sbc(uint16_t addr) {
   uint8_t memoryValue = bus.read(addr);
   uint8_t invertedMemoryValue = ~memoryValue;
   uint8_t carryBit = getFlag(Carry) ? 1 : 0;
-  uint16_t sum = a + invertedMemoryValue + carryBit;
+  uint16_t sum = reg.a + invertedMemoryValue + carryBit;
   uint8_t result = static_cast<uint8_t>(sum);
-  bool overflow = ((a ^ result) & (result ^ invertedMemoryValue) & 0x80) != 0;
-  a = result;
+  bool overflow = ((reg.a ^ result) & (result ^ invertedMemoryValue) & 0x80) != 0;
+  reg.a = result;
 
-  updateZeroNegativeFlags(a);
+  updateZeroNegativeFlags(reg.a);
   setFlag(Carry, sum > 0xFF);
   setFlag(Overflow, overflow);
 }
@@ -129,23 +129,23 @@ void Cpu::dec(uint16_t addr) {
 }
 
 void Cpu::inx(uint16_t /* unused */) {
-  x += 1;
-  updateZeroNegativeFlags(x);
+  reg.x += 1;
+  updateZeroNegativeFlags(reg.x);
 }
 
 void Cpu::dex(uint16_t /* unused */) {
-  x -= 1;
-  updateZeroNegativeFlags(x);
+  reg.x -= 1;
+  updateZeroNegativeFlags(reg.x);
 }
 
 void Cpu::iny(uint16_t /* unused */) {
-  y += 1;
-  updateZeroNegativeFlags(y);
+  reg.y += 1;
+  updateZeroNegativeFlags(reg.y);
 }
 
 void Cpu::dey(uint16_t /* unused */) {
-  y -= 1;
-  updateZeroNegativeFlags(y);
+  reg.y -= 1;
+  updateZeroNegativeFlags(reg.y);
 }
 
 // ============================================================
@@ -153,10 +153,10 @@ void Cpu::dey(uint16_t /* unused */) {
 // ============================================================
 
 void Cpu::asl_a(uint16_t /* unused */) {
-  bool carryBit = (a & 0x80) != 0;
-  a = a << 1;
+  bool carryBit = (reg.a & 0x80) != 0;
+  reg.a = reg.a << 1;
 
-  updateZeroNegativeFlags(a);
+  updateZeroNegativeFlags(reg.a);
   setFlag(Carry, carryBit);
 }
 
@@ -171,10 +171,10 @@ void Cpu::asl(uint16_t addr) {
 }
 
 void Cpu::lsr_a(uint16_t /* unused */) {
-  bool carryBit = (a & 0x01) != 0;
-  a = a >> 1;
+  bool carryBit = (reg.a & 0x01) != 0;
+  reg.a = reg.a >> 1;
 
-  updateZeroNegativeFlags(a);
+  updateZeroNegativeFlags(reg.a);
   setFlag(Carry, carryBit);
 }
 void Cpu::lsr(uint16_t addr) {
@@ -203,13 +203,13 @@ void Cpu::rol(uint16_t addr) {
 
 void Cpu::rol_a(uint16_t /* unused */) {
 
-  bool newCarry = (a & 0x80) != 0;
+  bool newCarry = (reg.a & 0x80) != 0;
   bool oldCarry = getFlag(Carry);
 
-  a = a << 1;
-  a |= oldCarry ? 1 : 0;
+  reg.a = reg.a << 1;
+  reg.a |= oldCarry ? 1 : 0;
 
-  updateZeroNegativeFlags(a);
+  updateZeroNegativeFlags(reg.a);
   setFlag(Carry, newCarry);
 }
 
@@ -228,13 +228,13 @@ void Cpu::ror(uint16_t addr) {
 }
 
 void Cpu::ror_a(uint16_t /* unused */) {
-  bool newCarry = (a & 0x01) != 0;
+  bool newCarry = (reg.a & 0x01) != 0;
   bool oldCarry = getFlag(Carry);
 
-  a = a >> 1;
-  a |= (oldCarry ? 0x80 : 0);
+  reg.a = reg.a >> 1;
+  reg.a |= (oldCarry ? 0x80 : 0);
 
-  updateZeroNegativeFlags(a);
+  updateZeroNegativeFlags(reg.a);
   setFlag(Carry, newCarry);
 }
 
@@ -244,25 +244,25 @@ void Cpu::ror_a(uint16_t /* unused */) {
 
 void Cpu::and_a(uint16_t addr) {
   uint8_t memoryValue = bus.read(addr);
-  a &= memoryValue;
-  updateZeroNegativeFlags(a);
+  reg.a &= memoryValue;
+  updateZeroNegativeFlags(reg.a);
 }
 
 void Cpu::ora(uint16_t addr) {
   uint8_t memoryValue = bus.read(addr);
-  a |= memoryValue;
-  updateZeroNegativeFlags(a);
+  reg.a |= memoryValue;
+  updateZeroNegativeFlags(reg.a);
 }
 
 void Cpu::eor(uint16_t addr) {
   uint8_t memoryValue = bus.read(addr);
-  a ^= memoryValue;
-  updateZeroNegativeFlags(a);
+  reg.a ^= memoryValue;
+  updateZeroNegativeFlags(reg.a);
 }
 
 void Cpu::bit(uint16_t addr) {
   uint8_t memoryValue = bus.read(addr);
-  uint8_t result = a & memoryValue;
+  uint8_t result = reg.a & memoryValue;
 
   setFlag(Zero, result == 0);
   setFlag(Overflow, (memoryValue & 0x40) != 0);
@@ -275,28 +275,28 @@ void Cpu::bit(uint16_t addr) {
 
 void Cpu::cmp(uint16_t addr) {
   uint8_t memoryValue = bus.read(addr);
-  uint8_t result = a - memoryValue;
+  uint8_t result = reg.a - memoryValue;
 
-  setFlag(Carry, a >= memoryValue);
-  setFlag(Zero, a == memoryValue);
+  setFlag(Carry, reg.a >= memoryValue);
+  setFlag(Zero, reg.a == memoryValue);
   setFlag(Negative, (result & 0x80) != 0);
 }
 
 void Cpu::cpx(uint16_t addr) {
   uint8_t memoryValue = bus.read(addr);
-  uint8_t result = x - memoryValue;
+  uint8_t result = reg.x - memoryValue;
 
-  setFlag(Carry, x >= memoryValue);
-  setFlag(Zero, x == memoryValue);
+  setFlag(Carry, reg.x >= memoryValue);
+  setFlag(Zero, reg.x == memoryValue);
   setFlag(Negative, (result & 0x80) != 0);
 }
 
 void Cpu::cpy(uint16_t addr) {
   uint8_t memoryValue = bus.read(addr);
-  uint8_t result = y - memoryValue;
+  uint8_t result = reg.y - memoryValue;
 
-  setFlag(Carry, y >= memoryValue);
-  setFlag(Zero, y == memoryValue);
+  setFlag(Carry, reg.y >= memoryValue);
+  setFlag(Zero, reg.y == memoryValue);
   setFlag(Negative, (result & 0x80) != 0);
 }
 
@@ -309,11 +309,11 @@ void Cpu::branch(bool condition, uint16_t addr) {
     return;
   }
   extraCycles += 1;
-  bool pageCrossed = (pc & 0xFF00) != (addr & 0xFF00);
+  bool pageCrossed = (reg.pc & 0xFF00) != (addr & 0xFF00);
   if (pageCrossed) {
     extraCycles += 1;
   }
-  pc = addr;
+  reg.pc = addr;
 }
 
 void Cpu::bcc(uint16_t addr) { branch(!getFlag(Carry), addr); }
@@ -336,28 +336,28 @@ void Cpu::bvs(uint16_t addr) { branch(getFlag(Overflow), addr); }
 // Jump Instructions
 // ============================================================
 
-void Cpu::jmp(uint16_t addr) { pc = addr; }
+void Cpu::jmp(uint16_t addr) { reg.pc = addr; }
 
 void Cpu::jsr(uint16_t addr) {
-  uint16_t returnAddr = pc - 1;
+  uint16_t returnAddr = reg.pc - 1;
   uint8_t highByte = returnAddr >> 8;
   uint8_t lowByte = returnAddr & 0xFF;
 
   push(highByte);
   push(lowByte);
-  pc = addr;
+  reg.pc = addr;
 }
 
 void Cpu::rts(uint16_t /* unused */) {
   uint8_t lowByte = pull();
   uint8_t highByte = pull();
   uint16_t addr = (highByte << 8) | lowByte;
-  pc = addr + 1;
+  reg.pc = addr + 1;
 }
 
 void Cpu::brk(uint16_t /* unused */) {
-  uint8_t highByte = pc >> 8;
-  uint8_t lowByte = pc & 0xFF;
+  uint8_t highByte = reg.pc >> 8;
+  uint8_t lowByte = reg.pc & 0xFF;
   push(highByte);
   push(lowByte);
 
@@ -367,36 +367,36 @@ void Cpu::brk(uint16_t /* unused */) {
 
   uint8_t low = bus.read(0xFFFE);
   uint8_t high = bus.read(0xFFFF);
-  pc = (high << 8) | low;
+  reg.pc = (high << 8) | low;
 }
 
 void Cpu::rti(uint16_t /* unused */) {
-  status = pull();
+  reg.status = pull();
   uint8_t lowByte = pull();
   uint8_t highByte = pull();
-  pc = (highByte << 8) | lowByte;
+  reg.pc = (highByte << 8) | lowByte;
 }
 
 // ============================================================
 // Stack Instructions
 // ============================================================
 
-void Cpu::pha(uint16_t /* unused */) { push(a); }
+void Cpu::pha(uint16_t /* unused */) { push(reg.a); }
 
 void Cpu::pla(uint16_t /* unused */) {
-  a = pull();
-  updateZeroNegativeFlags(a);
+  reg.a = pull();
+  updateZeroNegativeFlags(reg.a);
 }
 
 void Cpu::php(uint16_t /* unused */) { push(statusForPush()); }
 
-void Cpu::plp(uint16_t /* unused */) { status = pull(); }
+void Cpu::plp(uint16_t /* unused */) { reg.status = pull(); }
 
-void Cpu::txs(uint16_t /* unused */) { sp = x; }
+void Cpu::txs(uint16_t /* unused */) { reg.sp = reg.x; }
 
 void Cpu::tsx(uint16_t /* unused */) {
-  x = sp;
-  updateZeroNegativeFlags(x);
+  reg.x = reg.sp;
+  updateZeroNegativeFlags(reg.x);
 }
 
 // ============================================================

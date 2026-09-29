@@ -14,27 +14,27 @@ public:
 
   /// @brief Get accumulator register value
   /// @return The accumulator register
-  uint8_t getA() const { return a; }
+  uint8_t getA() const { return reg.a; }
 
   /// @brief Sets the accumulator
   /// @param value The value to set as the new accumulator
-  void setA(uint8_t value) { a = value; }
+  void setA(uint8_t value) { reg.a = value; }
 
   /// @brief  Get the X register value
   /// @return The X register
-  uint8_t getX() const { return x; }
+  uint8_t getX() const { return reg.x; }
 
   /// @brief Sets the program counter
   /// @param addr The address to set as the new program counter
-  void setPC(uint16_t addr) { pc = addr; }
+  void setPC(uint16_t addr) { reg.pc = addr; }
 
   /// @brief Gets the PC value
   /// @return The PC register
-  uint16_t getPC() const { return pc; }
+  uint16_t getPC() const { return reg.pc; }
 
   /// @brief Gets the SP value
   /// @return The SP register
-  uint8_t getSP() const { return sp; }
+  uint8_t getSP() const { return reg.sp; }
 
   /// @brief Status flags stored in the register
   enum StatusFlag : uint8_t {
@@ -77,12 +77,15 @@ private:
   Bus& bus;
 
   // -------- Registers --------
-  uint8_t a = 0;      // Accumulator
-  uint8_t x = 0;      // X index register
-  uint8_t y = 0;      // Y index register
-  uint16_t pc = 0;    // Program counter
-  uint8_t sp = 0;     // Stack pointer
-  uint8_t status = 0; // Status register
+  struct Registers {
+    uint8_t a = 0;      // Accumulator
+    uint8_t x = 0;      // X index register
+    uint8_t y = 0;      // Y index register
+    uint16_t pc = 0;    // Program counter
+    uint8_t sp = 0;     // Stack pointer
+    uint8_t status = 0; // Status register
+  };
+  Registers reg;
 
   /// @brief Extra cycles if a branch has been taken and page has been crossed
   int extraCycles = 0;
