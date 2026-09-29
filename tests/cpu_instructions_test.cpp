@@ -236,3 +236,14 @@ TEST_CASE_METHOD(CpuFixture, "BRK jumps to the address at 0xFFFE") {
 
   REQUIRE(cpu.getPC() == 0x1234);
 }
+
+TEST_CASE_METHOD(CpuFixture, "BRK pushes the return address after skipping the padding byte") {
+  cpu.setPC(0x1000);
+  writeAddr = 0x1000;
+  loadBytes({0x00, 0x00}); // BRK + padding byte
+  cpu.step();
+
+  // return address = 0x1002
+  REQUIRE(bus.read(0x0100) == 0x10);
+  REQUIRE(bus.read(0x01FF) == 0x02);
+}
