@@ -7,7 +7,7 @@
 // Forward declaration, cpu doesnt need the full Bus def
 class Bus;
 
-/// @brief The snapshot of the CPUs state
+/// @brief The snapshot of the CPUs observable state
 struct CpuState {
   uint8_t a;
   uint8_t x;
@@ -15,38 +15,12 @@ struct CpuState {
   uint16_t pc;
   uint8_t sp;
   uint8_t status;
-  uint64_t cycles;
+  uint64_t totalCycles;
 };
 
 /// Represents the NES 6502 CPU
 class Cpu {
 public:
-  // -------- Getters and Setters for testing --------
-
-  /// @brief Get accumulator register value
-  /// @return The accumulator register
-  uint8_t getA() const { return reg.a; }
-
-  /// @brief Sets the accumulator
-  /// @param value The value to set as the new accumulator
-  void setA(uint8_t value) { reg.a = value; }
-
-  /// @brief  Get the X register value
-  /// @return The X register
-  uint8_t getX() const { return reg.x; }
-
-  /// @brief Sets the program counter
-  /// @param addr The address to set as the new program counter
-  void setPC(uint16_t addr) { reg.pc = addr; }
-
-  /// @brief Gets the PC value
-  /// @return The PC register
-  uint16_t getPC() const { return reg.pc; }
-
-  /// @brief Gets the SP value
-  /// @return The SP register
-  uint8_t getSP() const { return reg.sp; }
-
   CpuState state() const {
     return CpuState{reg.a, reg.x, reg.y, reg.pc, reg.sp, reg.status, totalCycles};
   }
@@ -58,7 +32,7 @@ public:
     reg.pc = state.pc;
     reg.sp = state.sp;
     reg.status = state.status;
-    totalCycles = state.cycles;
+    totalCycles = state.totalCycles;
   }
 
   /// @brief Status flags stored in the register
