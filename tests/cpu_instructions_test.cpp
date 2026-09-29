@@ -214,3 +214,16 @@ TEST_CASE_METHOD(CpuFixture, "JMP indirect wraps when the address ends in 0xFF")
 
   REQUIRE(cpu.getPC() == 0x1234);
 }
+
+TEST_CASE_METHOD(CpuFixture, "JSR pushes the return address and jumps to the new target") {
+  cpu.setPC(0x1000);
+  writeAddr = 0x1000; // overwrite because 0x200 jumps to 0x0202, the high and low bytes are
+                      // identical and cant differentiate
+  loadBytes({0x20, 0x00, 0x30});
+  cpu.step();
+
+  REQUIRE(cpu.getPC() == 0x3000);
+  REQUIRE(cpu.getSP() == 0xFE);      // stack decreases by one
+  REQUIRE(bus.read(0x0100) == 0x10); // 0x1000 jumps to 0x1002
+  REQUIRE(bus.read(0x01FF) == 0x02);
+}

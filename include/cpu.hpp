@@ -28,7 +28,13 @@ public:
   /// @param addr The address to set as the new program counter
   void setPC(uint16_t addr) { pc = addr; }
 
+  /// @brief Gets the PC value
+  /// @return The PC register
   uint16_t getPC() const { return pc; }
+
+  /// @brief Gets the SP value
+  /// @return The SP register
+  uint8_t getSP() const { return sp; }
 
   /// @brief Status flags stored in the register
   enum StatusFlag : uint8_t {
