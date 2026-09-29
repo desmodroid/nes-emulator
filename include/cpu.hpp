@@ -47,7 +47,7 @@ public:
   /// @return The SP register
   uint8_t getSP() const { return reg.sp; }
 
-  CpuState getState() const {
+  CpuState state() const {
     return CpuState{reg.a, reg.x, reg.y, reg.pc, reg.sp, reg.status, totalCycles};
   }
 
