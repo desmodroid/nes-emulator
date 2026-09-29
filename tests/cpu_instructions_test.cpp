@@ -247,3 +247,63 @@ TEST_CASE_METHOD(CpuFixture, "BRK pushes the return address after skipping the p
   REQUIRE(bus.read(0x0100) == 0x10);
   REQUIRE(bus.read(0x01FF) == 0x02);
 }
+
+// ============================================================
+// Flag Instructions
+// ============================================================
+
+TEST_CASE_METHOD(CpuFixture, "CLC clears the carry flag") {
+  cpu.setFlag(Cpu::Carry, true);
+  loadBytes({0x18});
+  cpu.step();
+
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Carry));
+}
+
+TEST_CASE_METHOD(CpuFixture, "SEC sets the carry flag") {
+  cpu.setFlag(Cpu::Carry, false);
+  loadBytes({0x38});
+  cpu.step();
+
+  REQUIRE(cpu.getFlag(Cpu::Carry) == true);
+}
+
+TEST_CASE_METHOD(CpuFixture, "CLI clears the interrupt disable flag") {
+  cpu.setFlag(Cpu::Interrupt, true);
+  loadBytes({0x58});
+  cpu.step();
+
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Interrupt));
+}
+
+TEST_CASE_METHOD(CpuFixture, "SEI sets the interrupt disable flag") {
+  cpu.setFlag(Cpu::Interrupt, false);
+  loadBytes({0x78});
+  cpu.step();
+
+  REQUIRE(cpu.getFlag(Cpu::Interrupt) == true);
+}
+
+TEST_CASE_METHOD(CpuFixture, "CLD clears the decimal flag") {
+  cpu.setFlag(Cpu::Decimal, true);
+  loadBytes({0xD8});
+  cpu.step();
+
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Decimal));
+}
+
+TEST_CASE_METHOD(CpuFixture, "SED sets the decimal flag") {
+  cpu.setFlag(Cpu::Decimal, false);
+  loadBytes({0xF8});
+  cpu.step();
+
+  REQUIRE(cpu.getFlag(Cpu::Decimal) == true);
+}
+
+TEST_CASE_METHOD(CpuFixture, "CLV clears the overflow flag") {
+  cpu.setFlag(Cpu::Overflow, true);
+  loadBytes({0xB8});
+  cpu.step();
+
+  REQUIRE_FALSE(cpu.getFlag(Cpu::Overflow));
+}
