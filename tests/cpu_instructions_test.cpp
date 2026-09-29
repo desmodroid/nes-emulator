@@ -227,3 +227,12 @@ TEST_CASE_METHOD(CpuFixture, "JSR pushes the return address and jumps to the new
   REQUIRE(bus.read(0x0100) == 0x10); // 0x1000 jumps to 0x1002
   REQUIRE(bus.read(0x01FF) == 0x02);
 }
+
+TEST_CASE_METHOD(CpuFixture, "BRK jumps to the address at 0xFFFE") {
+  bus.write(0xFFFE, 0x12);
+  bus.write(0xFFFF, 0x34);
+  loadBytes({0x00, 0x00});
+  cpu.step();
+
+  REQUIRE(cpu.getPC() == 0x1234);
+}
