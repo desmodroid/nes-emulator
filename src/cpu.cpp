@@ -3,21 +3,6 @@
 
 Cpu::Cpu(Bus& bus) : bus(bus) { buildTable(); }
 
-bool Cpu::getFlag(StatusFlag flag) const { return (status & flag) != 0; }
-
-void Cpu::setFlag(StatusFlag flag, bool value) {
-  if (value) {
-    status |= flag;
-  } else {
-    status &= ~flag;
-  }
-}
-
-void Cpu::updateZeroNegativeFlags(uint8_t value) {
-  setFlag(Zero, value == 0);
-  setFlag(Negative, (value & 0x80) != 0);
-}
-
 /// Addressing mode, execution, cycles
 void Cpu::buildTable() {
   // clang-format off

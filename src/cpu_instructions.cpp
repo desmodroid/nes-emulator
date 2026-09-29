@@ -6,6 +6,21 @@
 // Helpers
 // ============================================================
 
+bool Cpu::getFlag(StatusFlag flag) const { return (status & flag) != 0; }
+
+void Cpu::setFlag(StatusFlag flag, bool value) {
+  if (value) {
+    status |= flag;
+  } else {
+    status &= ~flag;
+  }
+}
+
+void Cpu::updateZeroNegativeFlags(uint8_t value) {
+  setFlag(Zero, value == 0);
+  setFlag(Negative, (value & 0x80) != 0);
+}
+
 void Cpu::push(uint8_t byte) {
   bus.write(StackBase | sp, byte);
   sp--;
