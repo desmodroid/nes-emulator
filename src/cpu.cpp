@@ -204,7 +204,7 @@ void Cpu::buildTable() {
   table[0x08] = {[this]() { return implied();   }, [this](uint16_t v) { php(v); }, 3, false};
   table[0x28] = {[this]() { return implied();   }, [this](uint16_t v) { plp(v); }, 4, false};
   table[0x9A] = {[this]() { return implied();   }, [this](uint16_t v) { txs(v); }, 2, false};
-  table[0xBA] = {[this]() { return implied();   }, [this](uint16_t v) { tsx(v); }, 3, false};
+  table[0xBA] = {[this]() { return implied();   }, [this](uint16_t v) { tsx(v); }, 2, false};
 
   // clang-format on
 }
