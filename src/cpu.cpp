@@ -188,7 +188,8 @@ void Cpu::buildTable() {
   table[0x4C] = {[this]() { return absolute();  }, [this](uint16_t v) { jmp(v); }, 3, false};
   table[0x6C] = {[this]() { return indirect();  }, [this](uint16_t v) { jmp(v); }, 5, false};
 
-
+  table[0x20] = {[this]() { return absolute();  }, [this](uint16_t v) { jsr(v); }, 6, false};
+  table[0x60] = {[this]() { return implied();   }, [this](uint16_t v) { rts(v); }, 6, false};
 
   // clang-format on
 }

@@ -330,3 +330,10 @@ void Cpu::jsr(uint16_t addr) {
   push(lowByte);
   pc = addr;
 }
+
+void Cpu::rts(uint16_t /* unused */) {
+  uint8_t lowByte = pull();
+  uint8_t highByte = pull();
+  uint16_t addr = (highByte << 8) | lowByte;
+  pc = addr + 1;
+}
