@@ -106,6 +106,10 @@ private:
   /// @brief Increments the stack pointer and reads the byte from the stack
   uint8_t pull();
 
+  /// @brief Computes the processor status with break and unused bits forced to 1.
+  /// @return The status byte to push
+  uint8_t statusForPush();
+
   static constexpr uint16_t StackBase = 0x0100;
 
   // ============================================================
@@ -387,9 +391,19 @@ private:
 
   /// @brief Pushes the A register onto the stack
   void pha(uint16_t /* unused */);
-  void php(uint16_t /* unused */);
+
+  /// @brief Pulls the A register from the stack and stores it
   void pla(uint16_t /* unused */);
+
+  /// @brief Pushes the status flag and break flag to the stack
+  void php(uint16_t /* unused */);
+
+  /// @brief Pulls the processor status from the stack and stores it
   void plp(uint16_t /* unused */);
+
+  /// @brief Copies the X register value to the stack pointer
   void txs(uint16_t /* unused */);
+
+  /// @brief Copies the stack pointer to the X register
   void tsx(uint16_t /* unused */);
 };

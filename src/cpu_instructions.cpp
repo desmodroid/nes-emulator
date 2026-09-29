@@ -17,6 +17,8 @@ uint8_t Cpu::pull() {
   return stackByte;
 }
 
+uint8_t Cpu::statusForPush() { return status | Break | Unused; }
+
 // ============================================================
 // Access Instructions
 // ============================================================
@@ -345,8 +347,7 @@ void Cpu::brk(uint16_t /* unused */) {
   push(lowByte);
 
   // Flag only exists in the byte pushed to the stack, not real state in the CPU
-  uint8_t pushedStatus = status | Break | Unused;
-  push(pushedStatus);
+  push(statusForPush());
   setFlag(Interrupt, true);
 
   uint8_t low = bus.read(0xFFFE);
@@ -366,3 +367,19 @@ void Cpu::rti(uint16_t /* unused */) {
 // ============================================================
 
 void Cpu::pha(uint16_t /* unused */) { push(a); }
+
+void Cpu::pla(uint16_t /* unused */) {
+  a = pull();
+  updateZeroNegativeFlags(a);
+}
+
+void Cpu::php(uint16_t /* unused */) { push(statusForPush()); }
+
+void Cpu::plp(uint16_t /* unused */) { status = pull(); }
+
+void Cpu::txs(uint16_t /* unused */) { sp = x; }
+
+void Cpu::tsx(uint16_t /* unused */) {
+  x = sp;
+  updateZeroNegativeFlags(x);
+}
