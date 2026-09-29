@@ -360,3 +360,9 @@ void Cpu::rti(uint16_t /* unused */) {
   uint8_t highByte = pull();
   pc = (highByte << 8) | lowByte;
 }
+
+// ============================================================
+// Stack Instructions
+// ============================================================
+
+void Cpu::pha(uint16_t /* unused */) { push(a); }
