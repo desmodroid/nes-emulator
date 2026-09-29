@@ -215,14 +215,16 @@ void Cpu::step() {
   extraCycles = 0;
   auto [addr, pageCrossed] = instruction.addressingMode();
   instruction.execute(addr);
-  uint8_t totalCycles =
+  uint8_t cycles =
       instruction.cycles + ((pageCrossed && instruction.canCrossPage) ? 1 : 0) + extraCycles;
+  totalCycles += cycles;
 }
 
 void Cpu::reset(bool isSoftReset) {
   if (!isSoftReset) {
     reg.a = reg.x = reg.y = 0;
     reg.sp = 0xFD;
+    totalCycles = 0;
     setFlag(Carry, false);
     setFlag(Zero, false);
     setFlag(Decimal, false);

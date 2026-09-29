@@ -7,6 +7,17 @@
 // Forward declaration, cpu doesnt need the full Bus def
 class Bus;
 
+/// @brief The snapshot of the CPUs state
+struct CpuState {
+  uint8_t a;
+  uint8_t x;
+  uint8_t y;
+  uint16_t pc;
+  uint8_t sp;
+  uint8_t status;
+  uint64_t cycles;
+};
+
 /// Represents the NES 6502 CPU
 class Cpu {
 public:
@@ -35,6 +46,20 @@ public:
   /// @brief Gets the SP value
   /// @return The SP register
   uint8_t getSP() const { return reg.sp; }
+
+  CpuState getState() const {
+    return CpuState{reg.a, reg.x, reg.y, reg.pc, reg.sp, reg.status, totalCycles};
+  }
+
+  void setState(const CpuState& state) {
+    reg.a = state.a;
+    reg.x = state.x;
+    reg.y = state.y;
+    reg.pc = state.pc;
+    reg.sp = state.sp;
+    reg.status = state.status;
+    totalCycles = state.cycles;
+  }
 
   /// @brief Status flags stored in the register
   enum StatusFlag : uint8_t {
@@ -88,7 +113,10 @@ private:
   Registers reg;
 
   /// @brief Extra cycles if a branch has been taken and page has been crossed
-  int extraCycles = 0;
+  uint8_t extraCycles = 0;
+
+  /// @brief Total cycles executed
+  uint64_t totalCycles = 0;
 
   /// @brief Opcode table with its addressing mode, execution and number of
   /// cycles.
@@ -442,7 +470,6 @@ private:
   // ============================================================
   // Other Instructions
   // ============================================================
-
 
   /// @brief No operation, wastes space and CPU cycles
   void nop(uint16_t /* unused */);
