@@ -206,6 +206,17 @@ void Cpu::buildTable() {
   table[0x9A] = {[this]() { return implied();   }, [this](uint16_t v) { txs(v); }, 2, false};
   table[0xBA] = {[this]() { return implied();   }, [this](uint16_t v) { tsx(v); }, 2, false};
 
+  // -------- Flag Instructions --------
+  table[0x18] = {[this]() { return implied();   }, [this](uint16_t v) { clc(v); }, 2, false};
+  table[0x38] = {[this]() { return implied();   }, [this](uint16_t v) { sec(v); }, 2, false};
+  table[0x58] = {[this]() { return implied();   }, [this](uint16_t v) { cli(v); }, 2, false};
+  table[0x78] = {[this]() { return implied();   }, [this](uint16_t v) { sei(v); }, 2, false};
+  table[0xD8] = {[this]() { return implied();   }, [this](uint16_t v) { cld(v); }, 2, false};
+  table[0xF8] = {[this]() { return implied();   }, [this](uint16_t v) { sed(v); }, 2, false};
+  table[0xB8] = {[this]() { return implied();   }, [this](uint16_t v) { clv(v); }, 2, false};
+
+
+
   // clang-format on
 }
 

@@ -383,3 +383,21 @@ void Cpu::tsx(uint16_t /* unused */) {
   x = sp;
   updateZeroNegativeFlags(x);
 }
+
+// ============================================================
+// Flag Instructions
+// ============================================================
+
+void Cpu::clc(uint16_t /* unused */) { setFlag(Carry, false); }
+
+void Cpu::sec(uint16_t /* unused */) { setFlag(Carry, true); }
+
+void Cpu::cli(uint16_t /* unused */) { setFlag(Interrupt, false); }
+
+void Cpu::sei(uint16_t /* unused */) { setFlag(Interrupt, true); }
+
+void Cpu::cld(uint16_t /* unused */) { setFlag(Decimal, false); }
+
+void Cpu::sed(uint16_t /* unused */) { setFlag(Decimal, true); }
+
+void Cpu::clv(uint16_t /* unused */) { setFlag(Overflow, false); }

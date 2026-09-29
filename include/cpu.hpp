@@ -406,4 +406,29 @@ private:
 
   /// @brief Copies the stack pointer to the X register
   void tsx(uint16_t /* unused */);
+
+  // ============================================================
+  // Flag Instructions
+  // ============================================================
+
+  /// @brief Clears the carry flag
+  void clc(uint16_t /* unused */);
+
+  /// @brief Sets the carry flag
+  void sec(uint16_t /* unused */);
+
+  /// @brief Clears the interrupt disable flag
+  void cli(uint16_t /* unused */);
+
+  /// @brief Sets the interrupt disable flag
+  void sei(uint16_t /* unused */);
+
+  /// @brief Clears the decimal flag
+  void cld(uint16_t /* unused */);
+
+  /// @brief Sets the decimal flag
+  void sed(uint16_t /* unused */);
+
+  /// @brief Clears the overflow flag
+  void clv(uint16_t /* unused */);
 };
