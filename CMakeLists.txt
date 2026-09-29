@@ -16,9 +16,10 @@ FetchContent_MakeAvailable(Catch2)
 
 add_library(nes_core STATIC
     src/bus.cpp
-    src/cpu.cpp
+    src/cpu.cpp4
     src/cpu_addressing_modes.cpp
     src/cpu_instructions.cpp
+    src/cartridge.cpp
 )
 
 target_include_directories(nes_core PUBLIC

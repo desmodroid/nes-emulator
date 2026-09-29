@@ -6,7 +6,6 @@ Cpu::Cpu(Bus& bus) : bus(bus) { buildTable(); }
 /// Addressing mode, execution, cycles
 void Cpu::buildTable() {
   // clang-format off
-
   // -------- Access Instructions --------
   table[0xA9] = {[this]() { return immediate(); }, [this](uint16_t v) { lda(v); }, 2, false};
   table[0xA5] = {[this]() { return zeroPage();  }, [this](uint16_t v) { lda(v); }, 3, false};
