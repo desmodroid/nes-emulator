@@ -16,7 +16,7 @@ FetchContent_MakeAvailable(Catch2)
 
 add_library(nes_core STATIC
     src/bus.cpp
-    src/cpu.cpp4
+    src/cpu.cpp
     src/cpu_addressing_modes.cpp
     src/cpu_instructions.cpp
     src/cartridge.cpp
@@ -30,6 +30,7 @@ add_executable(nes-emulator main.cpp)
 
 add_executable(tests
     tests/cpu_instructions_test.cpp
+    tests/cartridge_tests.cpp
 )
 
 
