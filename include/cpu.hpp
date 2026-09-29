@@ -70,7 +70,8 @@ public:
   void step();
 
   /// @brief Resets the system
-  void reset();
+  /// @param isSoftReset True if soft reset, false otherwise
+  void reset(bool isSoftReset);
 
 private:
   Bus& bus;

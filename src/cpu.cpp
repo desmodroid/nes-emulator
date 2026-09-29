@@ -219,11 +219,20 @@ void Cpu::step() {
       instruction.cycles + ((pageCrossed && instruction.canCrossPage) ? 1 : 0) + extraCycles;
 }
 
-void Cpu::reset() {
-  a = x = y = 0;
+void Cpu::reset(bool isSoftReset) {
+  if (!isSoftReset) {
+    a = x = y = 0;
+    sp = 0xFD;
+    setFlag(Carry, false);
+    setFlag(Zero, false);
+    setFlag(Decimal, false);
+    setFlag(Overflow, false);
+    setFlag(Negative, false);
+  } else {
+    sp -= 3;
+  }
   uint8_t lowPC = bus.read(0xFFFC);
   uint8_t highPC = bus.read(0xFFFD);
   pc = (highPC << 8) | lowPC;
-  sp -= 3;
   setFlag(Interrupt, true);
 }
