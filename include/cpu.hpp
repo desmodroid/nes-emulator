@@ -431,4 +431,12 @@ private:
 
   /// @brief Clears the overflow flag
   void clv(uint16_t /* unused */);
+
+  // ============================================================
+  // Other Instructions
+  // ============================================================
+
+
+  /// @brief No operation, wastes space and CPU cycles
+  void nop(uint16_t /* unused */);
 };

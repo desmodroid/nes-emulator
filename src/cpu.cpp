@@ -215,8 +215,8 @@ void Cpu::buildTable() {
   table[0xF8] = {[this]() { return implied();   }, [this](uint16_t v) { sed(v); }, 2, false};
   table[0xB8] = {[this]() { return implied();   }, [this](uint16_t v) { clv(v); }, 2, false};
 
-
-
+  // -------- Other Instructions --------
+  table[0xEA] = {[this]() { return implied();   }, [this](uint16_t v) { nop(v); }, 2, false};
   // clang-format on
 }
 

@@ -385,7 +385,7 @@ void Cpu::tsx(uint16_t /* unused */) {
 }
 
 // ============================================================
-// Flag Instructions
+// Flags Instructions
 // ============================================================
 
 void Cpu::clc(uint16_t /* unused */) { setFlag(Carry, false); }
@@ -401,3 +401,9 @@ void Cpu::cld(uint16_t /* unused */) { setFlag(Decimal, false); }
 void Cpu::sed(uint16_t /* unused */) { setFlag(Decimal, true); }
 
 void Cpu::clv(uint16_t /* unused */) { setFlag(Overflow, false); }
+
+// ============================================================
+// Other Instructions
+// ============================================================
+
+void Cpu::nop(uint16_t /* unused */) { return; }
