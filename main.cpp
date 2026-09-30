@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
   try {
     Cartridge cartridge(readFile(argv[1]));
     Bus bus;
+    bus.connectCartridge(&cartridge);
     Cpu cpu(bus);
     cpu.reset(false);
 

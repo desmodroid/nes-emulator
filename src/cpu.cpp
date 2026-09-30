@@ -230,8 +230,10 @@ void Cpu::reset(bool isSoftReset) {
     setFlag(Overflow, false);
     setFlag(Negative, false);
   } else {
+    // soft reset
     reg.sp -= 3;
   }
+  // reset vectors
   uint8_t lowPC = bus.read(0xFFFC);
   uint8_t highPC = bus.read(0xFFFD);
   reg.pc = (highPC << 8) | lowPC;
