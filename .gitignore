@@ -33,3 +33,9 @@ _deps/
 *.swp
 *.swo
 .DS_Store
+
+# roms
+roms
+
+#logs
+*.log
