@@ -8,7 +8,7 @@ class Cartridge;
 /// @brief Represents the 6502 bus and 64KiB
 class Bus {
 public:
-  void connectCartridge(Cartridge *cart) { cartridge = cart; }
+  void connectCartridge(Cartridge* cart) { cartridge = cart; }
 
   /// @brief Writes a byte to the specified memory address
   /// @param addr The 16-bit memory address to write to
@@ -21,7 +21,7 @@ public:
   uint8_t read(uint16_t addr) const;
 
 private:
-  Cartridge *cartridge = nullptr;
+  Cartridge* cartridge = nullptr;
 
   /// @brief 64KiB of memory
   std::array<uint8_t, 2048> memory{};

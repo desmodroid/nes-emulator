@@ -31,7 +31,7 @@ void printTraceLine(const Cpu& cpu, const Bus& bus) {
   // clang-format on
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   if (argc < 2) {
     std::cerr << "Usage: " << argv[0] << " <rom.nes>" << std::endl;
     return 1;
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
     // cpu.setState(state);
 
     while (true) {
-      //printTraceLine(cpu, bus);
+      // printTraceLine(cpu, bus);
       cpu.step();
     }
   } catch (const std::exception& e) {
