@@ -35,3 +35,12 @@ Cartridge::Cartridge(const std::vector<uint8_t>& data) : header(parseHeader(data
   offset += header.prgRomSizeBytes;
   chrRom.assign(data.begin() + offset, data.begin() + offset + header.chrRomSizeBytes);
 }
+
+uint8_t Cartridge::read(uint16_t addr) const {
+  if (addr >= 0x8000) {
+    size_t offset = addr - 0x8000;
+    return prgRom[offset % prgRom.size()];
+  }
+  // 0x4020 - 0x7FFF
+  return 0;
+}

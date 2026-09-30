@@ -3,9 +3,13 @@
 #include <array>
 #include <cstdint>
 
+class Cartridge;
+
 /// @brief Represents the 6502 bus and 64KiB
 class Bus {
 public:
+  void connectCartridge(Cartridge *cart) { cartridge = cart; }
+
   /// @brief Writes a byte to the specified memory address
   /// @param addr The 16-bit memory address to write to
   /// @param data The 8-bit value to write
@@ -17,6 +21,8 @@ public:
   uint8_t read(uint16_t addr) const;
 
 private:
+  Cartridge *cartridge = nullptr;
+
   /// @brief 64KiB of memory
-  std::array<uint8_t, 65536> memory{};
+  std::array<uint8_t, 2048> memory{};
 };

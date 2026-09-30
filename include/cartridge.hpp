@@ -36,6 +36,8 @@ public:
   /// @return The raw CHR ROM bytes
   const std::vector<uint8_t>& getChrRom() const { return chrRom; }
 
+  uint8_t read(uint16_t) const;
+
 private:
   INesHeader header;
   std::vector<uint8_t> prgRom;
