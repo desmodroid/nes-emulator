@@ -233,9 +233,12 @@ void Cpu::reset(bool isSoftReset) {
     // soft reset
     reg.sp -= 3;
   }
+  // takes 7 cycles to reset / power on
+  totalCycles += 7;
   // reset vectors
   uint8_t lowPC = bus.read(0xFFFC);
   uint8_t highPC = bus.read(0xFFFD);
   reg.pc = (highPC << 8) | lowPC;
   setFlag(Interrupt, true);
+  setFlag(Unused, true);
 }
