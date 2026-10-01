@@ -166,7 +166,7 @@ void Cpu::buildTable() {
   table[0x10] = {[this]() { return relative();  }, [this](uint16_t v) { bpl(v); }, 2, false};
   table[0x30] = {[this]() { return relative();  }, [this](uint16_t v) { bmi(v); }, 2, false};
   table[0x50] = {[this]() { return relative();  }, [this](uint16_t v) { bvc(v); }, 2, false};
-  table[0x80] = {[this]() { return relative();  }, [this](uint16_t v) { bvs(v); }, 2, false};
+  table[0x70] = {[this]() { return relative();  }, [this](uint16_t v) { bvs(v); }, 2, false};
 
   // -------- Jump Instructions --------
   table[0x4C] = {[this]() { return absolute();  }, [this](uint16_t v) { jmp(v); }, 3, false};

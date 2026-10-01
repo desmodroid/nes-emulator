@@ -371,7 +371,8 @@ void Cpu::brk(uint16_t /* unused */) {
 }
 
 void Cpu::rti(uint16_t /* unused */) {
-  reg.status = pull();
+  uint8_t pulled = pull();
+  reg.status = (pulled & ~Break) | Unused;
   uint8_t lowByte = pull();
   uint8_t highByte = pull();
   reg.pc = (highByte << 8) | lowByte;
@@ -390,7 +391,10 @@ void Cpu::pla(uint16_t /* unused */) {
 
 void Cpu::php(uint16_t /* unused */) { push(statusForPush()); }
 
-void Cpu::plp(uint16_t /* unused */) { reg.status = pull(); }
+void Cpu::plp(uint16_t /* unused */) {
+  uint8_t pulled = pull();
+  reg.status = (pulled & ~Break) | Unused;
+}
 
 void Cpu::txs(uint16_t /* unused */) { reg.sp = reg.x; }
 
