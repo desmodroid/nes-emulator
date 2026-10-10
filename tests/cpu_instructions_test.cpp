@@ -212,8 +212,8 @@ TEST_CASE_METHOD(CpuFixture, "JSR pushes the return address and jumps to the new
 }
 
 TEST_CASE_METHOD(CpuFixture, "BRK jumps to the address at 0xFFFE") {
-  bus.write(0xFFFE, 0x34);
-  bus.write(0xFFFF, 0x12);
+  // brk points to memory addresses where the cartridge owns the ram
+  attachCartridge({{0xFFFE, 0x34}, {0xFFFF, 0x12}});
   loadBytes({0x00, 0x00});
   cpu.step();
 

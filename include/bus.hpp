@@ -23,6 +23,6 @@ public:
 private:
   Cartridge* cartridge = nullptr;
 
-  /// @brief 64KiB of memory
+  /// @brief 2KiB of memory
   std::array<uint8_t, 2048> memory{};
 };
