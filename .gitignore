@@ -39,3 +39,6 @@ roms
 
 #logs
 *.log
+
+#clangd
+*.cache/
