@@ -220,7 +220,10 @@ void Cpu::step() {
 }
 
 void Cpu::reset(bool isSoftReset) {
-  if (!isSoftReset) {
+  if (isSoftReset) {
+    reg.sp -= 3;
+  } else {
+    // power on: clear everything
     reg.a = reg.x = reg.y = 0;
     reg.sp = 0xFD;
     totalCycles = 0;
@@ -229,16 +232,16 @@ void Cpu::reset(bool isSoftReset) {
     setFlag(Decimal, false);
     setFlag(Overflow, false);
     setFlag(Negative, false);
-  } else {
-    // soft reset
-    reg.sp -= 3;
   }
+
   // takes 7 cycles to reset / power on
   totalCycles += 7;
+
   // reset vectors
   uint8_t lowPC = bus.read(0xFFFC);
   uint8_t highPC = bus.read(0xFFFD);
   reg.pc = (highPC << 8) | lowPC;
+
   setFlag(Interrupt, true);
   setFlag(Unused, true);
 }
