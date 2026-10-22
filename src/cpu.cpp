@@ -55,19 +55,19 @@ void Cpu::buildTable() {
   table[0x65] = {[this]() { return zeroPage();  }, [this](uint16_t v) { adc(v); }, 3, false};
   table[0x75] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { adc(v); }, 4, false};
   table[0x6D] = {[this]() { return absolute();  }, [this](uint16_t v) { adc(v); }, 4, false};
-  table[0x7D] = {[this]() { return absoluteX(); }, [this](uint16_t v) { adc(v); }, 4, false};
-  table[0x79] = {[this]() { return absoluteY(); }, [this](uint16_t v) { adc(v); }, 4, false};
+  table[0x7D] = {[this]() { return absoluteX(); }, [this](uint16_t v) { adc(v); }, 4, true};
+  table[0x79] = {[this]() { return absoluteY(); }, [this](uint16_t v) { adc(v); }, 4, true};
   table[0x61] = {[this]() { return indirectX(); }, [this](uint16_t v) { adc(v); }, 6, false};
-  table[0x71] = {[this]() { return indirectY(); }, [this](uint16_t v) { adc(v); }, 5, false};
+  table[0x71] = {[this]() { return indirectY(); }, [this](uint16_t v) { adc(v); }, 5, true};
 
   table[0xE9] = {[this]() { return immediate(); }, [this](uint16_t v) { sbc(v); }, 2, false};
   table[0xE5] = {[this]() { return zeroPage();  }, [this](uint16_t v) { sbc(v); }, 3, false};
   table[0xF5] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { sbc(v); }, 4, false};
   table[0xED] = {[this]() { return absolute();  }, [this](uint16_t v) { sbc(v); }, 4, false};
-  table[0xFD] = {[this]() { return absoluteX(); }, [this](uint16_t v) { sbc(v); }, 4, false};
-  table[0xF9] = {[this]() { return absoluteY(); }, [this](uint16_t v) { sbc(v); }, 4, false};
+  table[0xFD] = {[this]() { return absoluteX(); }, [this](uint16_t v) { sbc(v); }, 4, true};
+  table[0xF9] = {[this]() { return absoluteY(); }, [this](uint16_t v) { sbc(v); }, 4, true};
   table[0xE1] = {[this]() { return indirectX(); }, [this](uint16_t v) { sbc(v); }, 6, false};
-  table[0xF1] = {[this]() { return indirectY(); }, [this](uint16_t v) { sbc(v); }, 5, false};
+  table[0xF1] = {[this]() { return indirectY(); }, [this](uint16_t v) { sbc(v); }, 5, true};
 
   table[0xE6] = {[this]() { return zeroPage();  }, [this](uint16_t v) { inc(v); }, 5, false};
   table[0xF6] = {[this]() { return zeroPageX(); }, [this](uint16_t v) { inc(v); }, 6, false};
